@@ -1,7 +1,6 @@
 # Simple-Cognitive-Search-Tester
 Simple Cognitive Search Tester は、本当にシンプルなフル HTML の Azure Cognitive Search 用のクエリーテスターです。
-これは [Azure-Cognitive-Search-Workshop](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop) のための検索 UI として、また、製品のデモやクエリーテストのために開発されました。
-私が開発を進めている、Azure AI Tester の一部でもあります。
+これは [Azure-Cognitive-Search-Workshop](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop) のための検索 UI として、また、製品のデモやクエリーテストのために開発されました。そして私が開発を進めている、Azure AI Tester の一部でもあります。
 
 Simple Cognitive Search Tester is a really simple full HTML query-tester for Azure Cognitive Search.
 It was developed as a search UI for [Azure-Cognitive-Search-Workshop](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop), as well as for product demos and query-testing.
