@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Azure AI Tester | Detailed Search</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="stylesheets/fontawesome-free/css/all.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="stylesheets/adminlte.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="stylesheets/bootstrap-4.min.css">
+  <link rel="stylesheet" href="stylesheets/jquery.jsonview.min.css">
+  <link rel="stylesheet" href="stylesheets/azureaitester.css"> 
+</head>
+
+<body class="hold-transition sidebar-mini">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-dark navbar-lightblue">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="index.html" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="#" class="nav-link">Contact</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->
+    <!-- Sidebar -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-link">
+        <img src="images/azure.svg" width="24" class="mr-2 ml-2">
+        <span class="brand-text font-weight-light">Azure AI Tester</span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+            <li class="nav-header">Cognitive Services</li>
+            <li class="nav-item has-treeview menu-open">
+              <a href="index.html" class="nav-link active">
+
+                <i class="fas fa-search"></i>
+                <p class="mr-2 ml-1">
+                  Azure Cognitive Search
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="index.html" class="nav-link active" id="nav1">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Detailed Search</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="autocomplete.html" class="nav-link" id="nav2">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Autocomplete</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="suggest.html" class="nav-link" id="nav3">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Suggest</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-header">Settings</li>
+            <li class="nav-item has-treeview menu-open">
+            <li class="nav-item">
+              <a href="settings.html" class="nav-link" id="nav11">
+                <i class="fa fa-cog"></i>
+                <p class="mr-2 ml-1">Settings</p>
+              </a>
+            </li>
+            </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Detailed Search</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Detailed Search</li>
+              </ol>
+            </div>
+            <div class="col-sm-12">
+              <h6>This feature allows you to try various search queries.</h6>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Search</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                title="Collapse">
+                <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                <i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-sm-8">
+
+                <div class="input-group input-group" style="margin-bottom: 13px;">
+                  <input id="searchtext" type="text" class="form-control" value="" placeholder="Search Words">
+                  <span class="input-group-append">
+                    <button id="btnSearch" type="button" class="btn btn-info btn-flat">Go!</button>
+                  </span>
+                </div>
+                <div class="row">
+                  <div class="col-10 col-sm-10">
+                    <button class="btn btn-block btn-info btn-flat btn-xs" type="button" data-toggle="collapse" data-target="#collapseExample"
+                      aria-expanded="false" aria-controls="collapseExample">
+                      Params <i class="fa fa-chevron-down"></i>
+                    </button>
+                  </div>
+                  <div class="col-2 col-sm-2">
+                    <button id="btnClear" class="btn btn-block btn-info btn-flat btn-xs" type="button">
+                      Clear
+                    </button>
+                  </div>
+                </div>
+
+
+                <br>
+                <div class="collapse" id="collapseExample">
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>queryType</label>
+                        <select id="queryType" class="form-control form-control-sm">
+                          <option>simple</option>
+                          <option>full</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>searchMode</label>
+                        <select id="searchMode" class="form-control form-control-sm">
+                          <option>any</option>
+                          <option>all</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>$skip</label>
+                        <input id="skip" type="number" class="form-control form-control-sm" value="0">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>$top</label>
+                        <input id="top" type="number" class="form-control form-control-sm" value="50">
+                      </div>
+                    </div>
+                
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>searchFields</label>
+                        <input id="searchFields" type="text" class="form-control form-control-sm" value="merged_content, keyphrases"
+                          placeholder="merged_content, keyphrases">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>$filter</label>
+                        <input id="search-filter" type="text" class="form-control form-control-sm" value="" placeholder="Rating gt 0">
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>$select</label>
+                        <input id="search-select" type="text" class="form-control form-control-sm" value="" placeholder="content">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>$orderby</label>
+                        <input id="search-orderby" type="text" class="form-control form-control-sm" value=""
+                          placeholder="metadata_storage_size desc">
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="form-group">
+                    <label>facet</label>
+                    <input id="search-facet" type="text" class="form-control form-control-sm"
+                      value="&quot;keyphrases,count:5&quot;, &quot;organizations,count:5&quot;, &quot;locations,count:5&quot;"
+                      placeholder="&quot;keyphrases,count:5&quot;, &quot;organizations,count:5&quot;">
+                  </div>
+
+                  <div class="form-group">
+                    <label>highlight</label>
+                    <input id="search-highlight" type="text" class="form-control form-control-sm"
+                      value="merged_content, keyphrases"
+                      placeholder="merged_content, keyphrases">
+                  </div>
+                </div>
+
+
+                <div class="search-header">
+                  <span id="search-count">1 - 10 of 10</span>
+                </div>
+                <div id="searchresult">
+                  <div class="post">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="card card-primary card-outline card-outline-tabs">
+                  <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill"
+                          href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home"
+                          aria-selected="true">Filters</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
+                          href="#custom-tabs-four-profile2" role="tab" aria-controls="custom-tabs-four-profile2"
+                          aria-selected="false">Request Json</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
+                          href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile"
+                          aria-selected="false">Response Json</a>
+                      </li>
+
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-four-tabContent">
+                      <div class="tab-pane fade active show" id="custom-tabs-four-home" role="tabpanel"
+                        aria-labelledby="custom-tabs-four-home-tab">
+                      </div>
+                      <div class="tab-pane fade" id="custom-tabs-four-profile2" role="tabpanel"
+                        aria-labelledby="custom-tabs-four-profile-tab">
+                        <div id="json2"></div>
+                      </div>
+                      <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel"
+                        aria-labelledby="custom-tabs-four-profile-tab">
+                        <button id="toggle-btn" class="btn btn-outline-secondary btn-xs">Collapse/Expand</button>
+                        <button id="toggle-level1-btn" class="btn btn-outline-secondary btn-xs">Toggle level1</button>
+                        <button id="toggle-level2-btn" class="btn btn-outline-secondary btn-xs">Toggle level2</button>
+                        <button id="toggle-level3-btn" class="btn btn-outline-secondary btn-xs">Toggle level3</button>
+                        <div id="json"></div>
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <!-- /.card -->
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer">
+          </div>
+          <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <footer class="main-footer">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 0.0.1
+      </div>
+      <strong>Copyright &copy; 2020 All rights reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+  <div class="modal fade" id="modal-facet">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><i class="fas fa-info-circle"></i></button> Select $filter syntax</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="btn-group-vertical" style="width: 100%;">
+            <label>Edm.String</label>
+            <button type="button" class="btn btn-block btn-default btnAddFacet" id="btnAddFacet-string" data-output=""></button>
+            <label>Edm.Int, Edm.DateTimeOffset etc.</label>
+            <button type="button" class="btn btn-block btn-default btnAddFacet" id="btnAddFacet-number" data-output=""></button>
+            <label>Collection(Edm.String) etc.</label>
+            <button type="button" class="btn btn-block btn-default btnAddFacet" id="btnAddFacet-collection" data-output=""></button>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade" id="modal-content" tabindex="-1" role="dialog" aria-labelledby="addFaceModalLabel">
+    <div class="modal-dialog modal-dialog-fluid" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="addFaceLabel">showContent</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <textarea id="textarea_content2" class="form-control" rows="6" placeholder="FaceIds"
+              style="font-size:14px; display:none"></textarea>
+
+          </form>
+          <pre id="textarea_content"></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><i class="fas fa-exclamation-triangle"></i></button> Error</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- jQuery -->
+  <script src="javascripts/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="javascripts/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="javascripts/adminlte.min.js"></script>
+  <script src="javascripts/loadingoverlay.min.js"></script>
+  <script src="javascripts/sweetalert2.min.js"></script>
+  <script src="javascripts/jquery.jsonview.min.js"></script>
+  <script src="javascripts/moment.min.js"></script>
+  <script src="javascripts/moment-timezone.min.js"></script>
+  <script src="javascripts/moment-timezone-with-data.min.js"></script>
+
+  <script>
+
+    $(function () {
+      //https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript/39906526
+      function formatBytes(a, b = 2) { if (0 === a) return "0 Bytes"; const c = 0 > b ? 0 : b, d = Math.floor(Math.log(a) / Math.log(1024)); return parseFloat((a / Math.pow(1024, d)).toFixed(c)) + " " + ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d] }
+      //https://stackoverflow.com/questions/8493195/how-can-i-parse-a-csv-string-with-javascript-which-contains-comma-in-data
+      function CSVtoArray(s) { if (!/^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/.test(s)) return null; var r = []; return s.replace(/(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g, function (s, e, t, u) { return void 0 !== e ? r.push(e.replace(/\\'/g, "'")) : void 0 !== t ? r.push(t.replace(/\\"/g, '"')) : void 0 !== u && r.push(u), "" }), /,\s*$/.test(s) && r.push(""), r }
+      function trimEllip(str, length) {
+        if (str.length > length) {
+          return str.substring(0, length) + "...";
+        } else {
+          return str;
+        }
+      };
+      function showModal(message) {
+        var modal = $('#modal-default');
+        modal.find('.modal-body p').text(message);
+        $('#modal-default').modal('show');
+      };
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+
+      //================================================================================================
+      // localstorage
+      //
+      function storageAvailable(type) {
+        try {
+          var storage = window[type],
+            x = '__storage_test__';
+          storage.setItem(x, x);
+          storage.removeItem(x);
+          return true;
+        } catch (e) {
+          return e instanceof DOMException && (
+            e.code === 22 ||
+            e.code === 1014 ||
+            e.name === 'QuotaExceededError' ||
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            storage.length !== 0;
+        }
+      }
+
+      var search_service = ""; //検索サービス名 search service name
+      var index_name = "";     //インデックス名 index name
+      var querykey = "";       //クエリキー search query key
+
+      // もし localstorage を使用しない場合は、以下をコメントアウトし、直接変数に値を記載してください
+      // If you do not want to use localstorage, comment out the following code and set the value directly in the variables.
+      if (storageAvailable('localStorage')) {
+        search_service = localStorage.getItem("search_service");
+        index_name = localStorage.getItem("index_name");
+        querykey = localStorage.getItem("querykey");
+      }
+      
+      //================================================================================================
+      // Events
+      //
+      $('#btnSearch').click(function () {
+        var searchtext = $('#searchtext').val();
+        var searchFilter = $('#search-filter').val();
+        var searchSelect = $('#search-select').val();
+        var searchOrderby = $('#search-orderby').val();
+        var queryType = $('#queryType').val();
+        var searchMode = $('#searchMode').val();
+        var searchFields = $('#searchFields').val();
+        var top = $('#top').val();
+        var skip = $('#skip').val();
+        var searchFacet = $('#search-facet').val()
+        var searchHighlight = $('#search-highlight').val();
+
+        if (!search_service || !index_name || !querykey) {
+          return;
+        }
+
+        $.LoadingOverlay("show");
+        var params = {
+          'search': searchtext,
+          'api-version': '2020-06-30-Preview',
+          'queryType': queryType,
+          'searchMode': searchMode,
+          '$count': true,
+          '$top': Number(top),
+          '$skip': Number(skip)
+        };
+
+        if (searchFilter.length > 0) {
+          params["$filter"] = searchFilter;
+        }
+        if (searchSelect.length > 0) {
+          params["$select"] = searchSelect;
+        }
+        if (searchOrderby.length > 0) {
+          params["$orderby"] = searchOrderby;
+        }
+        if (searchFields.length > 0) {
+          params["searchFields"] = searchFields;
+        }
+        if (searchFacet.length > 0) {
+          params["facet"] = CSVtoArray(searchFacet);
+        }
+        if (searchHighlight.length > 0) {
+          params["highlight"] = searchHighlight
+        }
+
+        $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          contentType: 'application/json; charset=UTF-8',
+          url: 'https://' + search_service + '.search.windows.net/indexes/' + index_name + '/docs',
+          headers: {
+            "api-key": querykey
+          },
+          data: params
+
+        }).done(function (data, textStatus, jqXHR) {
+          var result = data['value'];
+          var ul = [];
+          var $result = $("#searchresult");
+          var $facetcard = $('#custom-tabs-four-home')
+          var searchcount = data['@odata.count'];
+          $result.empty();
+          $facetcard.empty();
+
+          result.forEach(function (element) {
+            var title = element['metadata_storage_name']
+            var size = element['metadata_storage_size']
+            var date = element['metadata_storage_last_modified']
+            var score = element['@search.score']
+            var merged_content = element['merged_content']
+            var html_content = ""
+            var html_title = ""
+            var html_head = ""
+            var html_hidden = ""
+
+            html_title = "<div class='post'><div class='search-title'><a href='#' class='search-title-link' title='" + title + "'>" + title + "</a></div>"
+            html_head = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() +
+              "</span><span class='search-size'>, " + formatBytes(size) +
+              "</span><span class='search-score'>, @search.score:" + score + "</span></div>"
+            html_hidden = "<p class='merged_content'>" + escape(merged_content) + "</p>" + "</div>"
+
+            if (element['@search.highlights']) {
+              var highlights = element['@search.highlights']
+              var keyList = Object.keys(highlights)
+              var li = [];
+              for (let k1 in keyList) {
+                li.push(highlights[keyList[k1]])
+              }
+              html_content = "<p class='highlight'>" + li.join("") + "</p>"
+            }
+
+            ul.push(html_title + html_head + html_content + html_hidden);
+          });
+
+          if (data['@search.facets']) {
+            var facets = data['@search.facets']
+            var keyList = Object.keys(facets)
+
+            var div = [];
+            for (let k1 in keyList) {
+              var facetitemlist = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
+              var li = [];
+              for (let k2 in facetitemlist) {
+                var facetname = facetitemlist[k2].value;
+                list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetname), 25) + "<span class='badge bg-primary float-right'>" + facetitemlist[k2].count + "</span></a></li>"
+                li.push(list)
+              }
+
+              card1 = '<div class="card"><div class="card-header"><h3 class="card-title">' + keyList[k1] + '</h3>'
+              card2 = '<div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0" style="display: block;">'
+              card3 = '<ul id="facet-organizations" class="nav nav-pills flex-column">' + li.join("") + '</ul></div></div>'
+              div.push(card1 + card2 + card3);
+            }
+
+            $facetcard[0].innerHTML = div.join("");
+          }
+
+          $result[0].innerHTML = ul.join("");
+          $('#search-count').text("1 - " + searchcount + " of " + searchcount);
+          $('#json').JSONView(data);
+          $('#json2').JSONView(params);
+          $.LoadingOverlay("hide");
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+          var res = {}
+          try {
+            res = $.parseJSON(jqXHR.responseText);
+            showModal(res.error.message);
+          } catch (e) {
+          }
+
+          $.LoadingOverlay("hide");
+        });
+      });
+
+      $("input").keypress(function (e) {
+        if (e.which == 13) {
+          $("#btnSearch").click();
+        }
+      });
+
+      $(document).on('click', '.search-title-link', function () {
+        $('#textarea_content').text('');
+        var filename = $(this).text();
+        var contenttext = $(this).parent().parent().find(".merged_content").text();
+        var modal = $('#modal-content');
+
+        $('#textarea_content').text(unescape(contenttext));
+        $('#addFaceLabel').text(filename);
+        $('#modal-content').modal('show');
+        return false;
+      });
+
+      $(document).on('click', '.facet-link', function () {
+        var facetitem = $($(this).contents()[0]).text();
+        var facetField = $(this).data('facetfield');
+        var searchFilter = $('#search-filter').val();
+        var filterString = "";
+        var filterNumber = "";
+        var filterCollection = "";
+        var filterString_add = "";
+        var filterNumber_add = "";
+        var filterCollection_add = "";
+
+        if (facetitem.length > 0) {
+          filterString = facetField + " eq '" + facetitem + "'";
+          filterNumber = facetField + " eq " + facetitem;
+          filterCollection = facetField + "/any(t:t eq '" + facetitem + "')";
+
+          if (searchFilter.length > 0) {
+            filterString_add = searchFilter + ' and ' + facetField + " eq '" + facetitem + "'";
+            filterNumber_add = searchFilter + ' and ' + facetField + " eq " + facetitem;
+            filterCollection_add = searchFilter + ' and ' + facetField + "/any(t:t eq '" + facetitem + "')";
+          }
+
+          $('#btnAddFacet-string').text(filterString);
+          $('#btnAddFacet-number').text(filterNumber);
+          $('#btnAddFacet-collection').text(filterCollection);
+          $('#btnAddFacet-string').attr("data-output", filterString_add);
+          $('#btnAddFacet-number').attr("data-output", filterNumber_add);
+          $('#btnAddFacet-collection').attr("data-output", filterCollection_add);
+
+          $('#modal-facet').modal('show');
+        }
+
+        return false;
+      });
+
+      $('.btnAddFacet').click(function () {
+        var outputString = $(this).attr("data-output");
+        var outputButtonText = $(this).text();
+
+        if (outputString.length > 0) {
+          $('#search-filter').val(outputString);
+        } else {
+          $('#search-filter').val(outputButtonText);
+        }
+        $('#modal-facet').modal('hide');
+      });
+
+      $('#btnClear').click(function () {
+        $('#searchtext').val("");
+        $('#search-filter').val("");
+        $('#search-select').val("");
+        $('#search-orderby').val("");
+        $('#queryType').val("simple");
+        $('#searchMode').val("any");
+        $('#searchFields').val("");
+        $('#top').val(50);
+        $('#skip').val(0);
+        $('#search-facet').val("")
+        $('#search-highlight').val("");
+        Toast.fire({
+          icon: 'success',
+          title: 'クリア完了しました'
+        });
+      });
+
+      $('#modal-content').on('shown.bs.modal', function (event) {
+        //console.log("modal shown")
+        $('#textarea_content').scrollTop(0);
+      });
+
+      $('#toggle-btn').on('click', function () {
+        $('#json').JSONView('toggle');
+      });
+
+      $('#toggle-level1-btn').on('click', function () {
+        $('#json').JSONView('toggle', 1);
+      });
+
+      $('#toggle-level2-btn').on('click', function () {
+        $('#json').JSONView('toggle', 2);
+      });
+
+      $('#toggle-level3-btn').on('click', function () {
+        $('#json').JSONView('toggle', 3);
+      });
+
+
+    });
+  </script>
+
+
+
+</body>
+
+</html>

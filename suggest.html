@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Azure AI Tester | Suggest</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="stylesheets/fontawesome-free/css/all.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="stylesheets/adminlte.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="stylesheets/bootstrap-4.min.css">
+  <link rel="stylesheet" href="stylesheets/jquery.jsonview.min.css">
+  <link rel="stylesheet" href="stylesheets/jquery-ui.min.css">
+  <link rel="stylesheet" href="stylesheets/azureaitester.css"> 
+</head>
+
+<body class="hold-transition sidebar-mini">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-dark navbar-lightblue">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="index.html" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="#" class="nav-link">Contact</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->
+    <!-- Sidebar -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-link">
+        <img src="images/azure.svg" width="24" class="mr-2 ml-2">
+        <span class="brand-text font-weight-light">Azure AI Tester</span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+            <li class="nav-header">Cognitive Services</li>
+            <li class="nav-item has-treeview menu-open">
+              <a href="index.html" class="nav-link active">
+
+                <i class="fa fa-search"></i>
+                <p class="mr-2 ml-1">
+                  Azure Cognitive Search
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="index.html" class="nav-link" id="nav1">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Detailed Search</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="autocomplete.html" class="nav-link" id="nav2">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Autocomplete</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="suggest.html" class="nav-link active" id="nav3">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Suggest</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-header">Settings</li>
+            <li class="nav-item has-treeview menu-open">
+            <li class="nav-item">
+              <a href="settings.html" class="nav-link" id="nav11">
+                <i class="fa fa-cog"></i>
+                <p class="mr-2 ml-1">Settings</p>
+              </a>
+            </li>
+            </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Suggest</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Suggest</li>
+              </ol>
+            </div>
+            <div class="col-sm-12">
+              <h6>You can test real-time suggest by using jquery UI Autocomplete.</h6>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Search</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                title="Collapse">
+                <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                <i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-sm-8">
+
+                <div class="input-group input-group" style="margin-bottom: 13px;">
+                  <input id="searchtext" type="text" class="form-control" value="">
+                  <span class="input-group-append">
+                    <button id="btnSearch" type="button" class="btn btn-info btn-flat disabled">Go!</button>
+                  </span>
+                </div>
+
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>fuzzy</label>
+                      <select id="fuzzy" class="form-control form-control-sm">
+                        <option>false</option>
+                        <option>true</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>suggesterName</label>
+                      <input id="suggesterName" type="text" class="form-control form-control-sm" value="sg1" placeholder="sg1">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>$top</label>
+                      <input id="top" type="number" class="form-control form-control-sm" value="5">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>searchFields</label>
+                      <input id="searchFields" type="text" class="form-control form-control-sm"
+                        value="merged_content" placeholder="merged_content">
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>$filter</label>
+                      <input id="search-filter" type="text" class="form-control form-control-sm" value=""
+                        placeholder="Rating gt 0">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>$select</label>
+                      <input id="search-select" type="text" class="form-control form-control-sm" value="metadata_storage_name"
+                        placeholder="content">
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>$orderby</label>
+                      <input id="search-orderby" type="text" class="form-control form-control-sm" value=""
+                        placeholder="metadata_storage_size desc">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="search-header">
+                  <span id="search-count">1 - 10 of 10</span>
+                </div>
+                <div id="searchresult">
+                  <div class="post">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="card card-primary card-outline card-outline-tabs">
+                  <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-four-profile-tab" data-toggle="pill"
+                          href="#custom-tabs-four-profile2" role="tab" aria-controls="custom-tabs-four-profile2"
+                          aria-selected="true">Request Json</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
+                          href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile"
+                          aria-selected="false">Response Json</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-four-tabContent">
+                      <div class="tab-pane fade active show" id="custom-tabs-four-profile2" role="tabpanel"
+                        aria-labelledby="custom-tabs-four-profile-tab">
+                        <div id="json2"></div>
+                      </div>
+                      <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel"
+                        aria-labelledby="custom-tabs-four-profile-tab">
+                        <button id="toggle-btn" class="btn btn-outline-secondary btn-xs">Collapse/Expand</button>
+                        <button id="toggle-level1-btn" class="btn btn-outline-secondary btn-xs">Toggle level1</button>
+                        <button id="toggle-level2-btn" class="btn btn-outline-secondary btn-xs">Toggle level2</button>
+                        <button id="toggle-level3-btn" class="btn btn-outline-secondary btn-xs">Toggle level3</button>
+                        <div id="json"></div>
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <!-- /.card -->
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer">
+          </div>
+          <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <footer class="main-footer">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 0.0.1
+      </div>
+      <strong>Copyright &copy; 2020 All rights reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+  <div class="modal fade" id="modal-content" tabindex="-1" role="dialog" aria-labelledby="addFaceModalLabel">
+    <div class="modal-dialog modal-dialog-fluid" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="addFaceLabel">showContent</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <textarea id="textarea_content2" class="form-control" rows="6" placeholder="FaceIds"
+              style="font-size:14px; display:none"></textarea>
+
+          </form>
+          <pre id="textarea_content"></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><i class="fas fa-exclamation-triangle"></i></button> Error</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- jQuery -->
+  <script src="javascripts/jquery.min.js"></script>
+  <script src="javascripts/jquery-ui.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="javascripts/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="javascripts/adminlte.min.js"></script>
+  <script src="javascripts/loadingoverlay.min.js"></script>
+  <script src="javascripts/sweetalert2.min.js"></script>
+  <script src="javascripts/jquery.jsonview.min.js"></script>
+
+  <script>
+
+    $(function () {
+      //https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript/39906526
+      function formatBytes(a, b = 2) { if (0 === a) return "0 Bytes"; const c = 0 > b ? 0 : b, d = Math.floor(Math.log(a) / Math.log(1024)); return parseFloat((a / Math.pow(1024, d)).toFixed(c)) + " " + ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d] }
+      //https://stackoverflow.com/questions/8493195/how-can-i-parse-a-csv-string-with-javascript-which-contains-comma-in-data
+      function CSVtoArray(s) { if (!/^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/.test(s)) return null; var r = []; return s.replace(/(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g, function (s, e, t, u) { return void 0 !== e ? r.push(e.replace(/\\'/g, "'")) : void 0 !== t ? r.push(t.replace(/\\"/g, '"')) : void 0 !== u && r.push(u), "" }), /,\s*$/.test(s) && r.push(""), r }
+
+      function showModal(message) {
+        var modal = $('#modal-default');
+        modal.find('.modal-body p').text(message);
+        $('#modal-default').modal('show');
+      };
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+
+      //================================================================================================
+      // localstorage
+      //
+      function storageAvailable(type) {
+        try {
+          var storage = window[type],
+            x = '__storage_test__';
+          storage.setItem(x, x);
+          storage.removeItem(x);
+          return true;
+        } catch (e) {
+          return e instanceof DOMException && (
+            e.code === 22 ||
+            e.code === 1014 ||
+            e.name === 'QuotaExceededError' ||
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            storage.length !== 0;
+        }
+      }
+
+      var search_service = ""; //検索サービス名
+      var index_name = "";     //インデックス名
+      var querykey = "";       //クエリキー
+
+      // もし localstorage を使用しない場合は、以下をコメントアウトし、直接変数に値を記載してください
+      // If you do not want to use localstorage, comment out the following code and set the value directly in the variables.
+      if (storageAvailable('localStorage')) {
+        search_service = localStorage.getItem("search_service");
+        index_name = localStorage.getItem("index_name");
+        querykey = localStorage.getItem("querykey");
+      }
+
+      //================================================================================================
+      // Events
+      //
+      $('#searchtext').autocomplete({
+        source: function (req, res) {
+          var searchFilter = $('#search-filter').val();
+          var searchFields = $('#searchFields').val();
+          var suggesterName = $('#suggesterName').val();
+          var fuzzy = $('#fuzzy').val();
+          var top = $('#top').val();
+          var searchSelect = $('#search-select').val();
+          var searchOrderby = $('#search-orderby').val();
+
+          if (!search_service || !index_name || !querykey) {
+            return;
+          }
+          var params = {
+            'search': req.term,
+            'api-version': '2020-06-30-Preview',
+            'fuzzy': fuzzy,
+            '$top': Number(top)
+          };
+          if (searchFilter.length > 0) {
+            params["$filter"] = searchFilter;
+          }
+          if (searchFields.length > 0) {
+            params["searchFields"] = searchFields;
+          }
+          if (suggesterName.length > 0) {
+            params["suggesterName"] = suggesterName;
+          }
+          if (searchSelect.length > 0) {
+            params["$select"] = searchSelect;
+          }
+          if (searchOrderby.length > 0) {
+            params["$orderby"] = searchOrderby;
+          }
+          
+          $.ajax({
+            url: 'https://' + search_service + '.search.windows.net/indexes/' + index_name + '/docs/suggest',
+            dataType: "json",
+            headers: {
+              "api-key": querykey
+            },
+            data: params,
+            success: function (data) {
+              var result = data['value'];
+              var texts = result.map(item => item.metadata_storage_name);
+
+              console.log(data);
+              res(texts);
+              $('#json').JSONView(data);
+              $('#json2').JSONView(params);
+            },
+            error: function (data) {
+              res([]);   // remember to call response() even if ajax failed
+              console.log("ajax failed", JSON.parse(data.responseText));
+            }
+          });
+        },
+        autoFocus: true,
+        delay: 500,
+        minLength: 1
+      });
+
+      $('#toggle-btn').on('click', function () {
+        $('#json').JSONView('toggle');
+      });
+
+      $('#toggle-level1-btn').on('click', function () {
+        $('#json').JSONView('toggle', 1);
+      });
+
+      $('#toggle-level2-btn').on('click', function () {
+        $('#json').JSONView('toggle', 2);
+      });
+
+      $('#toggle-level3-btn').on('click', function () {
+        $('#json').JSONView('toggle', 3);
+      });
+
+
+    });
+  </script>
+
+
+
+</body>
+
+</html>
