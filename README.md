@@ -8,25 +8,35 @@ It was developed as a search UI for [Azure-Cognitive-Search-Workshop](https://gi
 It's also part of the Azure AI Tester I'm developing.
 
 # Usage
-ダウンロードして、index.html をブラウザで起動するだけ。
-とてもシンプルでしょ？インストール作業は一切必要ありません。
+ダウンロードして、index.html をブラウザで起動するだけ。とってもシンプルでしょ？インストール作業は一切必要ありません。
 
 Download and launch index.html in your browser.
 Very simple, right? No installation required.
 
 # Prerequisites
-Azure Cognitive Search のインデックスフィールドは、[Azure-Cognitive-Search-Workshop](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop) の演習1 or 2 にしたがって作成してください。[演習2](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop/blob/main/UsingPostman.md) の Postman API コレクションを使えば、画像とまったく同じインデックスがすぐに作れます。
+
+## 1. Required index fields
+Azure Cognitive Search のインデックスフィールドは、[Azure-Cognitive-Search-Workshop](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop) の[演習1](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop/blob/main/CreateIndex.md) もしくは [演習2](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop/blob/main/UsingPostman.md) にしたがって作成してください。[演習2](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop/blob/main/UsingPostman.md) の Postman API コレクションを使えば、画像とまったく同じインデックスがすぐに作れます。
 
 The Azure Cognitive Search index fields should be created according to the [Azure-Cognitive-Search-Workshop](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop) exercises 1 or 2. Using the Postman API collection from [Exercise 2](https://github.com/nohanaga/Azure-Cognitive-Search-Workshop/blob/main/UsingPostman.md), you can quickly create an index exactly like the image.
 
 ![Prerequisites](./media/005.jpg)
+
+## 2. merged_content is required
+Simple Cognitive Search Tester はデフォルトで、`merged_content` を表示するように設定してあります。これを `content` など他の本文に変更したい場合は、`index.html` の Line:550 あたりのコードをお望みの本文フィールド名に置換してください。
+
+```javascript
+var mergedContent = element['merged_content']
+```
+
+Simple Cognitive Search Tester is configured to display `merged_content` by default. If you want to change it to `content` or some other content text, replace the code around Line:550 in `index.html` with the content field name you want.
+
 
 # Features
 
 ## 1. Detailed Search
 詳細検索では、Azure Cogntive Search の多くの検索クエリーを試すことができます。
 In Detailed Search, you can try many search queries in Azure Cogntive Search.
-
 
 - queryType
     - Simple Query parser
@@ -66,7 +76,7 @@ APIキーやエンドポイントの設定をします。
 - index_name: 検索インデックスの名前。検索対象のインデックス名を指定します。
 - querykey: Azure Cognitive Search サービスの API キー。検索クエリ用途のみですので、クエリキーのほうを使用します。これは [Azure Portal](https://portal.azure.com/) の検索サービスの「設定メニュ→キー」からコピーします。
 
-注意：localStorage に API キーを保管するのはセキュリティ上問題があります。今回一時的な使用のためだけに用意しています。必ずデモ終了後、Delete ボタンを押して削除してください。localStorage に API キーを保管したくない方は、各検索 html ページのソースコードの接続情報変数を直接編集してください。
+注意：localStorage に API キーを保管するのはセキュリティ上脆弱性があります。今回一時的な使用のためだけに用意しています。必ずデモ終了後、Delete ボタンを押して削除してください。localStorage に API キーを保管したくない方は、各検索 html ページのソースコードの接続情報変数を直接編集してください。
 
 ![Settings GUI](./media/004.jpg)
 
