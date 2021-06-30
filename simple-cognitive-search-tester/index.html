@@ -547,7 +547,7 @@
             var size = element['metadata_storage_size']
             var date = element['metadata_storage_last_modified']
             var score = element['@search.score']
-            var merged_content = element['merged_content']
+            var mergedContent = element['merged_content']
             var html_content = ""
             var html_title = ""
             var html_head = ""
@@ -557,7 +557,7 @@
             html_head = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() +
               "</span><span class='search-size'>, " + formatBytes(size) +
               "</span><span class='search-score'>, @search.score:" + score + "</span></div>"
-            html_hidden = "<p class='merged_content'>" + escape(merged_content) + "</p>" + "</div>"
+            html_hidden = "<p class='hide-content'>" + escape(mergedContent) + "</p>" + "</div>"
 
             if (element['@search.highlights']) {
               var highlights = element['@search.highlights']
@@ -621,7 +621,7 @@
       $(document).on('click', '.search-title-link', function () {
         $('#textarea_content').text('');
         var filename = $(this).text();
-        var contenttext = $(this).parent().parent().find(".merged_content").text();
+        var contenttext = $(this).parent().parent().find(".hide-content").text();
         var modal = $('#modal-content');
 
         $('#textarea_content').text(unescape(contenttext));
