@@ -59,11 +59,29 @@ In Detailed Search, you can try many search queries in Azure Cogntive Search.
 実際にオートコンプリート機能を jquery UI Autocomplete を使って試すことができます。
 You can test real-time autocomplete by using jquery UI Autocomplete.
 
+- autocompleteMode
+    - oneTerm
+    - twoTerms
+    - oneTermWithContext
+- fuzzy
+- suggesterName
+- $top
+- searchFields
+- $filter
+
 ![Autocomplete GUI](./media/002.jpg)
 
 ## 3. Suggest
 実際にサジェスト機能を jquery UI Autocomplete を使って試すことができます。
 You can test real-time suggest by using jquery UI Autocomplete.
+
+- fuzzy
+- suggesterName
+- $top
+- searchFields
+- $filter
+- $select
+- $orderby
 
 ![Suggest GUI](./media/003.jpg)
 
