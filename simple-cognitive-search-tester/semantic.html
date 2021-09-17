@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Azure AI Tester | Standard Search</title>
+  <title>Azure AI Tester | Semantic Search</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -14,7 +14,7 @@
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="stylesheets/bootstrap-4.min.css">
   <link rel="stylesheet" href="stylesheets/jquery.jsonview.min.css">
-  <link rel="stylesheet" href="stylesheets/azureaitester.css"> 
+  <link rel="stylesheet" href="stylesheets/azureaitester.css">
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -62,13 +62,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="index.html" class="nav-link active" id="nav1">
+                  <a href="index.html" class="nav-link" id="nav1">
                     <i class="fa fa-flask" aria-hidden="true"></i>
                     <p class="mr-2 ml-1">Standard Search</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="semantic.html" class="nav-link" id="nav2">
+                  <a href="semantic.html" class="nav-link active" id="nav2">
                     <i class="fa fa-flask" aria-hidden="true"></i>
                     <p class="mr-2 ml-1">Semantic Search</p>
                   </a>
@@ -116,16 +116,16 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>Standard Search</h1>
+              <h1>Semantic Search</h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Standard Search</li>
+                <li class="breadcrumb-item active">Semantic Search</li>
               </ol>
             </div>
             <div class="col-sm-12">
-              <h6>This feature allows you to try various search queries.</h6>
+              <h6>This feature allows you to try Semantic Ranking, Semantic Answer, and Semantic Caption.</h6>
             </div>
           </div>
         </div><!-- /.container-fluid -->
@@ -152,7 +152,7 @@
               <div class="col-12 col-sm-8">
 
                 <div class="input-group input-group" style="margin-bottom: 13px;">
-                  <input id="searchtext" type="text" class="form-control" value="" placeholder="Search Words">
+                  <input id="searchtext" type="text" class="form-control" value="機械学習" placeholder="Search Words">
                   <span class="input-group-append">
                     <button id="btnSearch" type="button" class="btn btn-info btn-flat">Go!</button>
                   </span>
@@ -181,6 +181,7 @@
                         <select id="queryType" class="form-control form-control-sm">
                           <option>simple</option>
                           <option>full</option>
+                          <option selected>semantic</option>
                         </select>
                       </div>
                     </div>
@@ -255,7 +256,9 @@
                   </div>
                 </div>
 
+                <div id="semantic-answer">
 
+                </div>
                 <div class="search-header">
                   <span id="search-count">1 - 10 of 10</span>
                   <a id="btnDownload" class="btn btn-outline-secondary btn-xs float-right" title="csv download" type="button"><i class="fa fa-download" aria-hidden="true"></i></a>
@@ -441,6 +444,16 @@
         return str;
       }
     };
+    function escapeSpecificHtml(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+        .replace(/&lt;em&gt;/g, "<em>")
+        .replace(/&lt;\/em&gt;/g, "</em>");
+    }
     function showModal(message) {
       var modal = $('#modal-default');
       modal.find('.modal-body p').text(message);
@@ -490,24 +503,24 @@
     // Events
     //
     $('#btnSearch').click(function () {
-      var searchtext = $('#searchtext').val();
-      var searchFilter = $('#search-filter').val();
-      var searchSelect = $('#search-select').val();
-      var searchOrderby = $('#search-orderby').val();
-      var queryType = $('#queryType').val();
-      var searchMode = $('#searchMode').val();
-      var searchFields = $('#searchFields').val();
-      var top = $('#top').val();
-      var skip = $('#skip').val();
-      var searchFacet = $('#search-facet').val()
-      var searchHighlight = $('#search-highlight').val();
+      let searchtext = $('#searchtext').val();
+      let searchFilter = $('#search-filter').val();
+      let searchSelect = $('#search-select').val();
+      let searchOrderby = $('#search-orderby').val();
+      let queryType = $('#queryType').val();
+      let searchMode = $('#searchMode').val();
+      let searchFields = $('#searchFields').val();
+      let top = $('#top').val();
+      let skip = $('#skip').val();
+      let searchFacet = $('#search-facet').val()
+      let searchHighlight = $('#search-highlight').val();
 
       if (!search_service || !index_name || !querykey) {
         return;
       }
 
       $.LoadingOverlay("show");
-      var params = {
+      let params = {
         'search': searchtext,
         'api-version': '2020-06-30-Preview',
         'queryType': queryType,
@@ -536,6 +549,10 @@
         params["highlight"] = searchHighlight
       }
 
+      //Semantic Search Parameters
+      params["answers"] = "extractive";
+      params["queryLanguage"] = "ja-jp";
+
       $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -547,27 +564,36 @@
         data: params
 
       }).done(function (data, textStatus, jqXHR) {
-        var result = data['value'];
-        var ul = [];
-        var $result = $("#searchresult");
-        var $facetcard = $('#custom-tabs-four-home')
-        var searchcount = data['@odata.count'];
+        let result = data['value'];
+        let ul = [];
+        let $result = $("#searchresult");
+        let $facetcard = $('#custom-tabs-four-home');
+        let $semanticAnswer = $('#semantic-answer');
+        let searchcount = data['@odata.count'];
         $result.empty();
         $facetcard.empty();
+        let titleKeymap = new Map();
 
-        result.forEach(function (element) {
-          var title = element['metadata_storage_name']
-          var size = element['metadata_storage_size']
-          var date = element['metadata_storage_last_modified']
-          var score = element['@search.score']
-          var mergedContent = element['merged_content']
-          var content = element['content'];
-          var html_content = ""
-          var html_title = ""
-          var html_head = ""
-          var html_hidden = ""
-          var useContent = "";
-
+        for (let i = 0; i < result.length; i++) {
+          let element = result[i];
+          let title = element['metadata_storage_name'];
+          let size = element['metadata_storage_size'];
+          let date = element['metadata_storage_last_modified'];
+          let score = element['@search.score'];
+          let rerankerScore = element['@search.rerankerScore'];
+          let storage_path = element['metadata_storage_path'];
+          let mergedContent = element['merged_content'];
+          let content = element['content'];
+          let html_content = "";
+          let html_title = "";
+          let html_head = "";
+          let html_hidden = "";
+          let html_caption = "";
+          let useContent = "";
+          
+          if (!rerankerScore) {
+            rerankerScore = 0;
+          }
           // The viewer that displays the contents of the document has priority
           // in the order of merged_content -> content.
           if (mergedContent && mergedContent.length > 0) {
@@ -576,32 +602,50 @@
             useContent = content;
           }
 
-          html_title = "<div class='post'><div class='search-title'><a href='#' class='search-title-link' title='" + title + "'>" + title + "</a></div>"
+          titleKeymap.set(storage_path, title);
+          html_title = "<div class='post'><div class='search-title'>" + "[" + (i + 1) + "] " + "<a href='#' class='search-title-link' title='" + title + "'>" + title + "</a></div>"
           html_head = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() +
             "</span>, <span class='search-size'>" + formatBytes(size) +
-            "</span>, @search.score:<span class='search-score'>" + score.toFixed(4) + "</span></div>"
+            "</span>, @sc:<span class='search-score'>" + score.toFixed(4) +
+            "</span>, @rsc:<span class='search-rerankerScore'>" + rerankerScore.toFixed(4) + "</span></div>"
           html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
+
+          if (element['@search.captions']) {
+            let captions = element['@search.captions']
+            let li = [];
+            for (let i = 0; i < captions.length; i++) {
+              let caption = captions[i];
+              let highlights = caption['highlights'];
+              let text = caption['text'];
+              if (highlights && highlights.length > 0) {
+                li.push(highlights);
+              } else if (text && text.length > 0) {
+                li.push(text);
+              }
+            }
+            html_caption = "<p class='semantic-caption' title='Semantic Caption'>" + escapeSpecificHtml(li.join("")) + "</p>"
+          }
 
           if (element['@search.highlights']) {
             let highlights = element['@search.highlights']
             let content = highlights['content']; // [String]
             content = content.join("").replace(/(\r\n|\n|\r)/gm, "");
-            html_content = "<p class='highlight'>" + content + "</p>"
+            html_content = "<p class='highlight'>" + escapeSpecificHtml(content) + "</p>"
           }
 
-          ul.push(html_title + html_head + html_content + html_hidden);
-        });
+          ul.push(html_title + html_head + html_caption + html_content + html_hidden);
+        };
 
         if (data['@search.facets']) {
-          var facets = data['@search.facets']
-          var keyList = Object.keys(facets)
-
-          var div = [];
+          let facets = data['@search.facets']
+          let keyList = Object.keys(facets)
+          let div = [];
           for (let k1 in keyList) {
-            var facetitemlist = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
-            var li = [];
+            let facetitemlist = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
+            let li = [];
+
             for (let k2 in facetitemlist) {
-              var facetname = facetitemlist[k2].value;
+              let facetname = facetitemlist[k2].value;
               list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetname), 25) + "<span class='badge bg-primary float-right'>" + facetitemlist[k2].count + "</span></a></li>"
               li.push(list)
             }
@@ -615,13 +659,33 @@
           $facetcard[0].innerHTML = div.join("");
         }
 
+        if (data['@search.answers']) {
+          let answers = data['@search.answers']
+          let div = [];
+          for (let i = 0; i < answers.length; i++) {
+            let element = answers[i];
+            let highlights = element['highlights']
+            let key = element['key']
+            let score = element['score']
+            let text = element['text']
+
+            callout1 = '<div class="callout callout-info callout-semantic" title="Semantic Answer"><h5>' + escapeSpecificHtml(highlights) + '</h5>'
+            callout2 = '<p class="answertitle">' + titleKeymap.get(key) + '<p>'
+            callout3 = "<span class='search-score'>score:" + score.toFixed(4) + '</span></div>'
+
+            div.push(callout1 + callout2 + callout3);
+          }
+
+          $semanticAnswer[0].innerHTML = div.join("");
+        }
+
         $result[0].innerHTML = ul.join("");
         $('#search-count').text("1 - " + searchcount + " of " + searchcount);
         $('#json').JSONView(data);
         $('#json2').JSONView(params);
         $.LoadingOverlay("hide");
       }).fail(function (jqXHR, textStatus, errorThrown) {
-        var res = {}
+        let res = {}
         try {
           res = $.parseJSON(jqXHR.responseText);
           showModal(res.error.message);
@@ -640,9 +704,9 @@
 
     $(document).on('click', '.search-title-link', function () {
       $('#textarea_content').text('');
-      var filename = $(this).text();
-      var contenttext = $(this).parent().parent().find(".hide-content").text();
-      var modal = $('#modal-content');
+      let filename = $(this).text();
+      let contenttext = $(this).parent().parent().find(".hide-content").text();
+      let modal = $('#modal-content');
 
       $('#textarea_content').text(unescape(contenttext));
       $('#addFaceLabel').text(filename);
@@ -651,15 +715,15 @@
     });
 
     $(document).on('click', '.facet-link', function () {
-      var facetitem = $($(this).contents()[0]).text();
-      var facetField = $(this).data('facetfield');
-      var searchFilter = $('#search-filter').val();
-      var filterString = "";
-      var filterNumber = "";
-      var filterCollection = "";
-      var filterString_add = "";
-      var filterNumber_add = "";
-      var filterCollection_add = "";
+      let facetitem = $($(this).contents()[0]).text();
+      let facetField = $(this).data('facetfield');
+      let searchFilter = $('#search-filter').val();
+      let filterString = "";
+      let filterNumber = "";
+      let filterCollection = "";
+      let filterString_add = "";
+      let filterNumber_add = "";
+      let filterCollection_add = "";
 
       if (facetitem.length > 0) {
         filterString = facetField + " eq '" + facetitem + "'";
@@ -686,8 +750,8 @@
     });
 
     $('.btnAddFacet').click(function () {
-      var outputString = $(this).attr("data-output");
-      var outputButtonText = $(this).text();
+      let outputString = $(this).attr("data-output");
+      let outputButtonText = $(this).text();
 
       if (outputString.length > 0) {
         $('#search-filter').val(outputString);
@@ -718,21 +782,22 @@
     //Download CSV Data
     $('#btnDownload').click(function () {
       var arrStandard = $('.post').map(function (index, element) {
-        return $(this).find('.search-title-link,.search-date,.search-size,.search-score,.highlight').map(function () {
+        return $(this).find('.search-title-link,.search-date,.search-size,.search-score,.search-rerankerScore,.semantic-caption,.highlight').map(function () {
           return $(this).text()
         });
       });
-
-      var header = ['std_title', 'std_date', 'std_size', 'std_score', 'std_highlight'];
+      
+      var header = ['smt_title', 'smt_date', 'smt_size', 'smt_score', 'smt_rescore', 'smt_caption', 'smt_highlight'];
       var crlf = '\r\n';
       var csv = arrStandard.map(function (i, row) { return row.toArray().join(','); }).toArray().join('\r\n');
       var bom = new Uint8Array([0xEF, 0xBB, 0xBF])
       var blob = new Blob([bom, header, crlf, csv], { type: 'text/csv' })
       var url = (window.URL || window.webkitURL).createObjectURL(blob)
       var a = document.getElementById('btnDownload')
-      a.download = 'standardsearchdata.csv'
+      a.download = 'semanticsearchdata.csv'
       a.href = url
     });
+
     $('#modal-content').on('shown.bs.modal', function (event) {
       //console.log("modal shown")
       $('#textarea_content').scrollTop(0);

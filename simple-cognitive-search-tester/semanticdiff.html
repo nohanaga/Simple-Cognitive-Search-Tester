@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Azure AI Tester | Standard Search</title>
+  <title>Azure AI Tester | Semantic Diff</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -62,7 +62,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="index.html" class="nav-link active" id="nav1">
+                  <a href="index.html" class="nav-link" id="nav1">
                     <i class="fa fa-flask" aria-hidden="true"></i>
                     <p class="mr-2 ml-1">Standard Search</p>
                   </a>
@@ -74,7 +74,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="semanticdiff.html" class="nav-link" id="nav3">
+                  <a href="semanticdiff.html" class="nav-link active" id="nav3">
                     <i class="fa fa-flask" aria-hidden="true"></i>
                     <p class="mr-2 ml-1">Semantic Diff</p>
                   </a>
@@ -116,16 +116,16 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>Standard Search</h1>
+              <h1>Semantic Search Diff Tool</h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Standard Search</li>
+                <li class="breadcrumb-item active">Semantic Diff</li>
               </ol>
             </div>
             <div class="col-sm-12">
-              <h6>This feature allows you to try various search queries.</h6>
+              <h6>This tool compares the results of Semantic Search and Standard Search.</h6>
             </div>
           </div>
         </div><!-- /.container-fluid -->
@@ -133,12 +133,10 @@
 
       <!-- Main content -->
       <section class="content">
-
         <!-- Default box -->
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Search</h3>
-
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
                 title="Collapse">
@@ -170,8 +168,7 @@
                     </button>
                   </div>
                 </div>
-
-
+                
                 <br>
                 <div class="collapse" id="collapseExample">
                   <div class="row">
@@ -256,17 +253,9 @@
                 </div>
 
 
-                <div class="search-header">
-                  <span id="search-count">1 - 10 of 10</span>
-                  <a id="btnDownload" class="btn btn-outline-secondary btn-xs float-right" title="csv download" type="button"><i class="fa fa-download" aria-hidden="true"></i></a>
-                </div>
-                <div id="searchresult">
-                  <div class="post">
-                  </div>
-                </div>
               </div>
               <div class="col-12 col-sm-4">
-                <div class="card card-primary card-outline card-outline-tabs">
+                <div class="card card-primary card-outline card-outline-tabs" style="max-height: 480px; overflow-y: auto;">
                   <div class="card-header p-0 border-bottom-0">
                     <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
                       <li class="nav-item">
@@ -304,8 +293,6 @@
                         <button id="toggle-level3-btn" class="btn btn-outline-secondary btn-xs">Toggle level3</button>
                         <div id="json"></div>
                       </div>
-
-
                     </div>
                   </div>
                   <!-- /.card -->
@@ -313,6 +300,41 @@
 
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <div class="card card-gray" id="standard">
+                  <div class="card-header p-1 text-center">
+                    Standard Ranking
+                  </div> 
+                </div>
+
+                <div class="search-header">
+                  <span id="search-count">1 - 10 of 10</span>
+                </div>
+                <div id="searchresult">
+                  <div class="post post-diff">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6 semantic-card">
+                <div class="card card-lightblue" id="semantic">
+                  <div class="card-header p-1 text-center">
+                    Semantic Ranking
+                  </div>
+                </div>
+                <div class="search-header">
+                  <span id="search-count-semantic">1 - 10 of 10</span>
+                  <a id="btnDownload" class="btn btn-outline-secondary btn-xs float-right" title="csv download" type="button"><i class="fa fa-download" aria-hidden="true"></i></a>
+                </div>
+                <div id="searchresult-semantic">
+                  <div class="post post-diff">
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
@@ -426,7 +448,7 @@
   <script src="javascripts/moment.min.js"></script>
   <script src="javascripts/moment-timezone.min.js"></script>
   <script src="javascripts/moment-timezone-with-data.min.js"></script>
-
+  <script src="javascripts/leader-line.min.js"></script>
   <script>
 
   $(function () {
@@ -536,100 +558,179 @@
         params["highlight"] = searchHighlight
       }
 
-      $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        contentType: 'application/json; charset=UTF-8',
-        url: 'https://' + search_service + '.search.windows.net/indexes/' + index_name + '/docs',
-        headers: {
-          "api-key": querykey
-        },
-        data: params
+      //============================================================================
+      // 1, Get a Standard Search result
+      // 2, Get a Semantic Search result
+      // It uses $.when to control that the two ajax connections are executed in sequence.
 
-      }).done(function (data, textStatus, jqXHR) {
-        var result = data['value'];
-        var ul = [];
-        var $result = $("#searchresult");
-        var $facetcard = $('#custom-tabs-four-home')
-        var searchcount = data['@odata.count'];
-        $result.empty();
-        $facetcard.empty();
+      var standard = function () {
+        var defer = $.Deferred();
+        $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          contentType: 'application/json; charset=UTF-8',
+          url: 'https://' + search_service + '.search.windows.net/indexes/' + index_name + '/docs',
+          headers: {
+            "api-key": querykey
+          },
+          data: params
 
-        result.forEach(function (element) {
-          var title = element['metadata_storage_name']
-          var size = element['metadata_storage_size']
-          var date = element['metadata_storage_last_modified']
-          var score = element['@search.score']
-          var mergedContent = element['merged_content']
-          var content = element['content'];
-          var html_content = ""
-          var html_title = ""
-          var html_head = ""
-          var html_hidden = ""
-          var useContent = "";
+        }).done(function (data, textStatus, jqXHR) {
+          var result = data['value'];
+          var ul = [];
+          var $result = $("#searchresult");
+          var $facetcard = $('#custom-tabs-four-home')
+          var searchcount = data['@odata.count'];
+          var arrDocumentOrder = [];
+          $result.empty();
+          $facetcard.empty();
 
-          // The viewer that displays the contents of the document has priority
-          // in the order of merged_content -> content.
-          if (mergedContent && mergedContent.length > 0) {
-            useContent = mergedContent;
-          } else if (content && content.length > 0) {
-            useContent = content;
-          }
+          for (let i = 0; i < result.length; i++) {
+            element = result[i];
+            var title = element['metadata_storage_name']
+            var size = element['metadata_storage_size']
+            var date = element['metadata_storage_last_modified']
+            var score = element['@search.score']
+            var mergedContent = element['merged_content']
+            var content = element['content'];
+            var storage_path = element['metadata_storage_path']
+            var html_content = ""
+            var html_title = ""
+            var html_head = ""
+            var html_hidden = ""
+            var useContent = "";
 
-          html_title = "<div class='post'><div class='search-title'><a href='#' class='search-title-link' title='" + title + "'>" + title + "</a></div>"
-          html_head = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() +
-            "</span>, <span class='search-size'>" + formatBytes(size) +
-            "</span>, @search.score:<span class='search-score'>" + score.toFixed(4) + "</span></div>"
-          html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
+            // The viewer that displays the contents of the document has priority
+            // in the order of merged_content -> content.
+            if (mergedContent && mergedContent.length > 0) {
+              useContent = mergedContent;
+            } else if (content && content.length > 0) {
+              useContent = content;
+            }
+            html_title = "<div class='post post-diff post-standard" + " rank-" + (i + 1) + "' id='rank-" + (i + 1) + "'><div class='search-title'>" + "[" + (i + 1) + "] " + "<a href='#' class='search-title-link' title='" + title + "'>" + title + "</a></div>"
+            html_head = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() +
+              "</span>, <span class='search-size'>" + formatBytes(size) +
+              "</span>, @sc:<span class='search-score'>" + score.toFixed(4) + "</span></div>"
+            html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
 
-          if (element['@search.highlights']) {
-            let highlights = element['@search.highlights']
-            let content = highlights['content']; // [String]
-            content = content.join("").replace(/(\r\n|\n|\r)/gm, "");
-            html_content = "<p class='highlight'>" + content + "</p>"
-          }
-
-          ul.push(html_title + html_head + html_content + html_hidden);
-        });
-
-        if (data['@search.facets']) {
-          var facets = data['@search.facets']
-          var keyList = Object.keys(facets)
-
-          var div = [];
-          for (let k1 in keyList) {
-            var facetitemlist = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
-            var li = [];
-            for (let k2 in facetitemlist) {
-              var facetname = facetitemlist[k2].value;
-              list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetname), 25) + "<span class='badge bg-primary float-right'>" + facetitemlist[k2].count + "</span></a></li>"
-              li.push(list)
+            if (element['@search.highlights']) {
+              let highlights = element['@search.highlights']
+              let content = highlights['content']; // [String]
+              html_content = "<p class='highlight'>" + content.join("") + "</p>"
             }
 
-            card1 = '<div class="card"><div class="card-header"><h3 class="card-title">' + keyList[k1] + '</h3>'
-            card2 = '<div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0" style="display: block;">'
-            card3 = '<ul id="facet-organizations" class="nav nav-pills flex-column">' + li.join("") + '</ul></div></div>'
-            div.push(card1 + card2 + card3);
+            ul.push(html_title + html_head + html_content + html_hidden);
+            arrDocumentOrder.push(storage_path)
+          };
+
+          $result[0].innerHTML = ul.join("");
+          $('#search-count').text("1 - " + searchcount + " of " + searchcount);
+
+          // arrDocumentOrder is used to identify the document after reranking.
+          defer.resolve(arrDocumentOrder);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+          var res = {}
+          try {
+            res = $.parseJSON(jqXHR.responseText);
+            showModal(res.error.message);
+          } catch (e) {
           }
 
-          $facetcard[0].innerHTML = div.join("");
-        }
+          $.LoadingOverlay("hide");
+        });
 
-        $result[0].innerHTML = ul.join("");
-        $('#search-count').text("1 - " + searchcount + " of " + searchcount);
-        $('#json').JSONView(data);
-        $('#json2').JSONView(params);
-        $.LoadingOverlay("hide");
-      }).fail(function (jqXHR, textStatus, errorThrown) {
-        var res = {}
-        try {
-          res = $.parseJSON(jqXHR.responseText);
-          showModal(res.error.message);
-        } catch (e) {
-        }
+        return defer.promise(this);
+      };
 
-        $.LoadingOverlay("hide");
+      $.when(standard()).done(function (res) {
+        //Semantic Search Parameters
+        // https://docs.microsoft.com/azure/search/semantic-how-to-query-request#query-using-rest
+        params["queryType"] = "semantic";
+        params["answers"] = "extractive";
+        params["queryLanguage"] = "ja-jp";
+
+        //============================================================================
+        // 2, Get a Semantic Search result
+        $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          contentType: 'application/json; charset=UTF-8',
+          url: 'https://' + search_service + '.search.windows.net/indexes/' + index_name + '/docs',
+          headers: {
+            "api-key": querykey
+          },
+          data: params
+
+        }).done(function (data, textStatus, jqXHR) {
+          var result = data['value'];
+          var ul = [];
+          var $result = $("#searchresult-semantic");
+          var $facetcard = $('#custom-tabs-four-home')
+          var searchcount = data['@odata.count'];
+          $result.empty();
+          $facetcard.empty();
+
+          result.forEach(function (element) {
+            var title = element['metadata_storage_name']
+            var size = element['metadata_storage_size']
+            var date = element['metadata_storage_last_modified']
+            var storage_path = element['metadata_storage_path']
+            var score = element['@search.score']
+            var rerankerScore = element['@search.rerankerScore']
+            var mergedContent = element['merged_content']
+            let content = element['content'];
+            var html_content = ""
+            var html_title = ""
+            var html_head = ""
+            var html_hidden = ""
+            var useContent = "";
+
+            if(!rerankerScore){
+              rerankerScore = 0;
+            }
+
+            // The viewer that displays the contents of the document has priority
+            // in the order of merged_content -> content.
+            if (mergedContent && mergedContent.length > 0) {
+              useContent = mergedContent;
+            } else if (content && content.length > 0) {
+              useContent = content;
+            }
+            // res = arrDocumentOrder
+            rerankIndex = res.findIndex(item => item == storage_path)
+            html_title = "<div class='post post-diff post-semantic" + " rank-" + (rerankIndex + 1) + "' id='re-rank-" + (rerankIndex + 1) + "'><div class='search-title'>" + "[" + (rerankIndex + 1) + "] " + "<a href='#' class='search-title-link' title='" + title + "'>" + title + "</a></div>"
+            html_head = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() +
+              "</span>, <span class='search-size'>" + formatBytes(size) +
+              "</span>, @sc:<span class='search-score'>" + score.toFixed(4) +
+              "</span>, @rsc:<span class='search-rerankerScore'>" + rerankerScore.toFixed(4) + "</span></div>"
+            html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
+
+            if (element['@search.highlights']) {
+              let highlights = element['@search.highlights']
+              let content = highlights['content']; // [String]
+              html_content = "<p class='highlight'>" + content.join("") + "</p>"
+            }
+
+            ul.push(html_title + html_head + html_content + html_hidden);
+          });
+
+          $result[0].innerHTML = ul.join("");
+          $('#search-count-semantic').text("1 - " + searchcount + " of " + searchcount);
+          $.LoadingOverlay("hide");
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+          var res = {}
+          try {
+            res = $.parseJSON(jqXHR.responseText);
+            showModal(res.error.message);
+          } catch (e) {
+          }
+
+          $.LoadingOverlay("hide");
+        });
+
       });
+
+
     });
 
     $("input").keypress(function (e) {
@@ -717,22 +818,33 @@
 
     //Download CSV Data
     $('#btnDownload').click(function () {
-      var arrStandard = $('.post').map(function (index, element) {
-        return $(this).find('.search-title-link,.search-date,.search-size,.search-score,.highlight').map(function () {
+      var arrStandard = $('.post-standard').map(function (index, element) {
+        return $(this).find('.search-title-link,.search-date,.search-size,.search-score,.search-rerankerScore').map(function () {
+          return $(this).text()
+        });
+      });
+      
+      var arrSemantic = $('.post-semantic').map(function (index, element) {
+        return $(this).find('.search-title-link,.search-date,.search-size,.search-score,.search-rerankerScore').map(function () {
           return $(this).text()
         });
       });
 
-      var header = ['std_title', 'std_date', 'std_size', 'std_score', 'std_highlight'];
+      for (var i = 0; i < arrStandard.length; i++) {
+          Array.prototype.push.apply(arrStandard[i], arrSemantic[i]);
+      }
+      
+      var header = ['std_title', 'std_date', 'std_size', 'std_score', 'smt_title', 'smt_date', 'smt_size', 'smt_score', 'smt_rescore'];
       var crlf = '\r\n';
-      var csv = arrStandard.map(function (i, row) { return row.toArray().join(','); }).toArray().join('\r\n');
+      var csv = arrStandard.map(function(i, row){return row.toArray().join(',');}).toArray().join('\r\n');
       var bom = new Uint8Array([0xEF, 0xBB, 0xBF])
       var blob = new Blob([bom, header, crlf, csv], { type: 'text/csv' })
       var url = (window.URL || window.webkitURL).createObjectURL(blob)
       var a = document.getElementById('btnDownload')
-      a.download = 'standardsearchdata.csv'
+      a.download = 'semanticsearchdiff.csv'
       a.href = url
     });
+
     $('#modal-content').on('shown.bs.modal', function (event) {
       //console.log("modal shown")
       $('#textarea_content').scrollTop(0);
@@ -754,9 +866,64 @@
       $('#json').JSONView('toggle', 3);
     });
 
+    //============================================================================
+    // Draw the connector between div
+    // https://github.com/anseki/leader-line
+    // MIT License
+    //============================================================================
+    var line;
+    var lineflag = false;
+    var activeClass = "";
+    $(document).on({
+      click: function() {
+        let getClass = $(this).attr('class').split(" ")[3];
+        if(lineflag && getClass == activeClass) {
+          lineflag = false;
+        } else {
+          lineflag = true;
+        }
+      },
+      mouseenter: function () {
+        if (!lineflag) {
+          let getClass = $(this).attr('class').split(" ")[3];
+          $("." + getClass).each(function (index, element) {
+            $(element).css("background-color", "#d3ffd3");
+            $(element).css("outline", "1px solid #a5d873");
+          });
+          activeClass = getClass;
+          let newId = "";
+          let getId = $(this).attr('id');
+
+          if (getId.indexOf('re-') != -1) {
+            newId = getId.replace('re-', '');
+          } else {
+            newId = getId;
+          }
+          line = new LeaderLine(
+            document.getElementById(newId),
+            document.getElementById('re-' + newId)
+          );
+          line.setOptions({
+            path: 'grid', startSocket: 'right', endSocket: 'left', startPlug: 'square', endPlug: 'square',
+            dash: { animation: true }, color: "#00cc00"
+          });
+        }
+      },
+      mouseleave: function () {
+        if (!lineflag) {
+          let getClass = $(this).attr('class').split(" ")[3];
+          $("." + getClass).each(function (index, element) {
+            $(element).css("background-color", "");
+            $(element).css("outline", "");
+          });
+          line.remove();
+          line = null;
+        }
+      }
+    }, ".post-diff");
 
   });
-  </script>
+</script>
 
 
 

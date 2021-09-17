@@ -68,6 +68,8 @@ em {
   color: #5c5c65;
   font-weight: bold;
   font-size: 19px;
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 
 .hide-content {
@@ -103,3 +105,59 @@ pre {
 .nav-link {
   padding: 0.5rem 0.8rem;
 }
+
+.semantic-card {
+  border-left-style: dashed;
+  border-left-width: thin;
+  border-left-color: #a0a0a0;
+}
+
+p.highlight {
+  height: 60px;
+  overflow: hidden;
+  margin-bottom: 0px;
+}
+
+.search-header {
+  height: 24px;
+  overflow: hidden;
+}
+
+.answertitle {
+  margin: 0; 
+  font-size: 1.2rem;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.semantic-caption {     
+  color: #fff;
+  background: #437780;
+  border-color: #1c5d67;
+  font-size: 13px;
+  position: relative;
+  padding: .25rem .25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+.semantic-caption>em { 
+  background-color: #bd7d3c;
+}
+
+.callout-semantic {
+  background-color: #e3eaef;
+}
+
+svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.search-rerankerScore {
+  font-weight: bold;
+}
+
+.modal { z-index: 10000;}
