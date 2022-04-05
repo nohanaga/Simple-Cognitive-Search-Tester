@@ -251,7 +251,23 @@
                     <label>highlight</label>
                     <input id="search-highlight" type="text" class="form-control form-control-sm"
                       value="content-3, merged_content-3, keyphrases-3"
-                      placeholder="content-3, merged_content-3, keyphrases-3">
+                      placeholder="field-#,... (#: max number of highlights)">
+                  </div>
+
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>scoringProfile</label>
+                        <input id="scoringProfile" type="text" class="form-control form-control-sm" value="" placeholder="profilename">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>scoringParameter</label>
+                        <input id="scoringParameter" type="text" class="form-control form-control-sm" value=""
+                          placeholder="name-value1,value2,...">
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -441,6 +457,16 @@
         return str;
       }
     };
+    function escapeSpecificHtml(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+        .replace(/&lt;em&gt;/g, "<em>")
+        .replace(/&lt;\/em&gt;/g, "</em>");
+    }
     function showModal(message) {
       var modal = $('#modal-default');
       modal.find('.modal-body p').text(message);
@@ -501,7 +527,9 @@
       var skip = $('#skip').val();
       var searchFacet = $('#search-facet').val()
       var searchHighlight = $('#search-highlight').val();
-
+      var scoringProfile = $('#scoringProfile').val();
+      var scoringParameter = $('#scoringParameter').val();
+      
       if (!search_service || !index_name || !querykey) {
         return;
       }
@@ -509,7 +537,7 @@
       $.LoadingOverlay("show");
       var params = {
         'search': searchtext,
-        'api-version': '2020-06-30-Preview',
+        'api-version': '2021-04-30-Preview',
         'queryType': queryType,
         'searchMode': searchMode,
         '$count': true,
@@ -534,6 +562,12 @@
       }
       if (searchHighlight.length > 0) {
         params["highlight"] = searchHighlight
+      }
+      if (scoringProfile.length > 0) {
+        params["scoringProfile"] = scoringProfile
+      }
+      if (scoringParameter.length > 0) {
+        params["scoringParameter"] = scoringParameter
       }
 
       $.ajax({
@@ -582,30 +616,34 @@
             "</span>, @search.score:<span class='search-score'>" + score.toFixed(4) + "</span></div>"
           html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
 
+          //@search.highlights 
           if (element['@search.highlights']) {
             let highlights = element['@search.highlights']
-            let content = highlights['content']; // [String]
-            content = content.join("").replace(/(\r\n|\n|\r)/gm, "");
-            html_content = "<p class='highlight'>" + content + "</p>"
+            let highlightsList = [];
+            for (let key in highlights) {
+              highlightsList.push(highlights[key]);
+            }
+            let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, "");
+            html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
           }
-
           ul.push(html_title + html_head + html_content + html_hidden);
         });
 
+        //@search.facets 
         if (data['@search.facets']) {
           var facets = data['@search.facets']
           var keyList = Object.keys(facets)
-
           var div = [];
           for (let k1 in keyList) {
-            var facetitemlist = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
+            //keyphrases: [{count: 16, value: "UK"}...
+            //locations: [{count: 19, value: "London"}...
+            var facetItemList = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
             var li = [];
-            for (let k2 in facetitemlist) {
-              var facetname = facetitemlist[k2].value;
-              list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetname), 25) + "<span class='badge bg-primary float-right'>" + facetitemlist[k2].count + "</span></a></li>"
+            for (let k2 in facetItemList) {
+              var facetName = facetItemList[k2].value;
+              list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetName), 25) + "<span class='badge bg-primary float-right'>" + facetItemList[k2].count + "</span></a></li>"
               li.push(list)
             }
-
             card1 = '<div class="card"><div class="card-header"><h3 class="card-title">' + keyList[k1] + '</h3>'
             card2 = '<div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0" style="display: block;">'
             card3 = '<ul id="facet-organizations" class="nav nav-pills flex-column">' + li.join("") + '</ul></div></div>'
@@ -711,7 +749,7 @@
       $('#search-highlight').val("");
       Toast.fire({
         icon: 'success',
-        title: 'クリア完了しました'
+        title: 'Textfield has been cleared.'
       });
     });
 

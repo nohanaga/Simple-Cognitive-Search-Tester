@@ -116,7 +116,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>Semantic Search</h1>
+              <h1>Semantic Search (2020-06-30-Preview)</h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -572,6 +572,7 @@
         let searchcount = data['@odata.count'];
         $result.empty();
         $facetcard.empty();
+        $semanticAnswer.empty();
         let titleKeymap = new Map();
 
         for (let i = 0; i < result.length; i++) {
@@ -609,7 +610,8 @@
             "</span>, @sc:<span class='search-score'>" + score.toFixed(4) +
             "</span>, @rsc:<span class='search-rerankerScore'>" + rerankerScore.toFixed(4) + "</span></div>"
           html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
-
+          
+          //@search.captions 
           if (element['@search.captions']) {
             let captions = element['@search.captions']
             let li = [];
@@ -626,27 +628,32 @@
             html_caption = "<p class='semantic-caption' title='Semantic Caption'>" + escapeSpecificHtml(li.join("")) + "</p>"
           }
 
+          //@search.highlights 
           if (element['@search.highlights']) {
             let highlights = element['@search.highlights']
-            let content = highlights['content']; // [String]
-            content = content.join("").replace(/(\r\n|\n|\r)/gm, "");
-            html_content = "<p class='highlight'>" + escapeSpecificHtml(content) + "</p>"
+            let highlightsList = [];
+            for (let key in highlights) {
+              highlightsList.push(highlights[key]);
+            }
+            let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, "");
+            html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
           }
 
           ul.push(html_title + html_head + html_caption + html_content + html_hidden);
         };
 
+        //@search.facets 
         if (data['@search.facets']) {
           let facets = data['@search.facets']
           let keyList = Object.keys(facets)
           let div = [];
           for (let k1 in keyList) {
-            let facetitemlist = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
+            let facetItemList = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
             let li = [];
 
-            for (let k2 in facetitemlist) {
-              let facetname = facetitemlist[k2].value;
-              list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetname), 25) + "<span class='badge bg-primary float-right'>" + facetitemlist[k2].count + "</span></a></li>"
+            for (let k2 in facetItemList) {
+              let facetName = facetItemList[k2].value;
+              list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetName), 25) + "<span class='badge bg-primary float-right'>" + facetItemList[k2].count + "</span></a></li>"
               li.push(list)
             }
 
@@ -659,6 +666,7 @@
           $facetcard[0].innerHTML = div.join("");
         }
 
+        //@search.answers 
         if (data['@search.answers']) {
           let answers = data['@search.answers']
           let div = [];
