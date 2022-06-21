@@ -463,6 +463,16 @@
         return str;
       }
     };
+    function escapeSpecificHtml(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+        .replace(/&lt;em&gt;/g, "<em>")
+        .replace(/&lt;\/em&gt;/g, "</em>");
+    }
     function showModal(message) {
       var modal = $('#modal-default');
       modal.find('.modal-body p').text(message);
@@ -613,10 +623,15 @@
               "</span>, @sc:<span class='search-score'>" + score.toFixed(4) + "</span></div>"
             html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
 
+
             if (element['@search.highlights']) {
               let highlights = element['@search.highlights']
-              let content = highlights['content']; // [String]
-              html_content = "<p class='highlight'>" + content.join("") + "</p>"
+              let highlightsList = [];
+              for (let key in highlights) {
+                highlightsList.push(highlights[key]);
+              }
+              let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, "");
+              html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
             }
 
             ul.push(html_title + html_head + html_content + html_hidden);
@@ -705,11 +720,17 @@
               "</span>, @rsc:<span class='search-rerankerScore'>" + rerankerScore.toFixed(4) + "</span></div>"
             html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
 
+            //@search.highlights 
             if (element['@search.highlights']) {
               let highlights = element['@search.highlights']
-              let content = highlights['content']; // [String]
-              html_content = "<p class='highlight'>" + content.join("") + "</p>"
+              let highlightsList = [];
+              for (let key in highlights) {
+                highlightsList.push(highlights[key]);
+              }
+              let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, "");
+              html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
             }
+
 
             ul.push(html_title + html_head + html_content + html_hidden);
           });
