@@ -91,6 +91,23 @@
                     <p class="mr-2 ml-1">Suggest</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="fas fa-folder"></i>
+                    <p class="mr-2 ml-1">
+                      Old Version
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                      <a href="semantic_old.html" class="nav-link">
+                        <i class="fa fa-flask"></i>
+                        <p class="mr-2 ml-1"><small>Semantic Search (2020-06-30-Prev)</small></p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
               </ul>
             </li>
             <li class="nav-header">Settings</li>
@@ -463,16 +480,6 @@
         return str;
       }
     };
-    function escapeSpecificHtml(unsafe) {
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;")
-        .replace(/&lt;em&gt;/g, "<em>")
-        .replace(/&lt;\/em&gt;/g, "</em>");
-    }
     function showModal(message) {
       var modal = $('#modal-default');
       modal.find('.modal-body p').text(message);
@@ -623,15 +630,10 @@
               "</span>, @sc:<span class='search-score'>" + score.toFixed(4) + "</span></div>"
             html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
 
-
             if (element['@search.highlights']) {
               let highlights = element['@search.highlights']
-              let highlightsList = [];
-              for (let key in highlights) {
-                highlightsList.push(highlights[key]);
-              }
-              let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, "");
-              html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
+              let content = highlights['content']; // [String]
+              html_content = "<p class='highlight'>" + content.join("") + "</p>"
             }
 
             ul.push(html_title + html_head + html_content + html_hidden);
@@ -720,17 +722,11 @@
               "</span>, @rsc:<span class='search-rerankerScore'>" + rerankerScore.toFixed(4) + "</span></div>"
             html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
 
-            //@search.highlights 
             if (element['@search.highlights']) {
               let highlights = element['@search.highlights']
-              let highlightsList = [];
-              for (let key in highlights) {
-                highlightsList.push(highlights[key]);
-              }
-              let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, "");
-              html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
+              let content = highlights['content']; // [String]
+              html_content = "<p class='highlight'>" + content.join("") + "</p>"
             }
-
 
             ul.push(html_title + html_head + html_content + html_hidden);
           });

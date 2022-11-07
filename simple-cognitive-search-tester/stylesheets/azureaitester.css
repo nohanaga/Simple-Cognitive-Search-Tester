@@ -60,7 +60,7 @@ em {
   background-color: #ffcc99;
 }
 
-.highlight {
+.highlight, .datetime {
   font-size: 13px;
 }
 
@@ -73,6 +73,14 @@ em {
 }
 
 .hide-content {
+  display: none;
+}
+
+.filepath {
+  display: none;
+}
+
+.content-type {
   display: none;
 }
 
@@ -161,3 +169,25 @@ svg {
 }
 
 .modal { z-index: 10000;}
+
+.list-dt {
+  display: inline-block;
+  font-size: 13px !important;
+  background-color: #4e759e !important;
+  font-weight: 400 !important;
+  margin-right: 3px;
+}
+
+.ul-dt {
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  overflow: auto;
+}
+
+#imagepreview_content {
+  height: 100%; 
+  max-height: 800px;
+} 

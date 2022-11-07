@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="stylesheets/bootstrap-4.min.css">
   <link rel="stylesheet" href="stylesheets/jquery.jsonview.min.css">
   <link rel="stylesheet" href="stylesheets/azureaitester.css"> 
+  <link rel="stylesheet" href="stylesheets/xspreadsheet.css"/>
+  <link rel="stylesheet" href="stylesheets/pdf.css" />
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -90,6 +92,23 @@
                     <i class="fa fa-flask" aria-hidden="true"></i>
                     <p class="mr-2 ml-1">Suggest</p>
                   </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="fas fa-folder"></i>
+                    <p class="mr-2 ml-1">
+                      Old Version
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                      <a href="semantic_old.html" class="nav-link">
+                        <i class="fa fa-flask"></i>
+                        <p class="mr-2 ml-1"><small>Semantic Search (2020-06-30-Prev)</small></p>
+                      </a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </li>
@@ -177,7 +196,7 @@
                   <div class="row">
                     <div class="col-3">
                       <div class="form-group">
-                        <label>queryType</label>
+                        <label>queryType</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <select id="queryType" class="form-control form-control-sm">
                           <option>simple</option>
                           <option>full</option>
@@ -186,7 +205,7 @@
                     </div>
                     <div class="col-3">
                       <div class="form-group">
-                        <label>searchMode</label>
+                        <label>searchMode</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <select id="searchMode" class="form-control form-control-sm">
                           <option>any</option>
                           <option>all</option>
@@ -195,13 +214,13 @@
                     </div>
                     <div class="col-3">
                       <div class="form-group">
-                        <label>$skip</label>
+                        <label>$skip</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <input id="skip" type="number" class="form-control form-control-sm" value="0">
                       </div>
                     </div>
                     <div class="col-3">
                       <div class="form-group">
-                        <label>$top</label>
+                        <label>$top</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <input id="top" type="number" class="form-control form-control-sm" value="50">
                       </div>
                     </div>
@@ -211,14 +230,14 @@
                   <div class="row">
                     <div class="col-6">
                       <div class="form-group">
-                        <label>searchFields</label>
+                        <label>searchFields</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <input id="searchFields" type="text" class="form-control form-control-sm" value="content, merged_content, keyphrases"
                           placeholder="content, merged_content, keyphrases">
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="form-group">
-                        <label>$filter</label>
+                        <label>$filter</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-filter" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <input id="search-filter" type="text" class="form-control form-control-sm" value="" placeholder="Rating gt 0">
                       </div>
                     </div>
@@ -227,13 +246,13 @@
                   <div class="row">
                     <div class="col-6">
                       <div class="form-group">
-                        <label>$select</label>
+                        <label>$select</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-select" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <input id="search-select" type="text" class="form-control form-control-sm" value="" placeholder="content">
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="form-group">
-                        <label>$orderby</label>
+                        <label>$orderby</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-orderby" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <input id="search-orderby" type="text" class="form-control form-control-sm" value=""
                           placeholder="metadata_storage_size desc">
                       </div>
@@ -241,23 +260,23 @@
                   </div>
                 
                   <div class="form-group">
-                    <label>facet</label>
+                    <label>facet</label> <a href="https://learn.microsoft.com/azure/search/search-faceted-navigation#facets-syntax" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                     <input id="search-facet" type="text" class="form-control form-control-sm"
                       value="&quot;keyphrases,count:5&quot;, &quot;organizations,count:5&quot;, &quot;locations,count:5&quot;"
                       placeholder="&quot;keyphrases,count:5&quot;, &quot;organizations,count:5&quot;">
                   </div>
 
                   <div class="form-group">
-                    <label>highlight</label>
+                    <label>highlight</label> <a href="https://learn.microsoft.com/azure/search/search-pagination-page-layout#hit-highlighting" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                     <input id="search-highlight" type="text" class="form-control form-control-sm"
                       value="content-3, merged_content-3, keyphrases-3"
                       placeholder="field-#,... (#: max number of highlights)">
                   </div>
-
+                  
                   <div class="row">
                     <div class="col-6">
                       <div class="form-group">
-                        <label>scoringProfile</label>
+                        <label>scoringProfile</label> <a href="https://learn.microsoft.com/azure/search/index-add-scoring-profiles" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <input id="scoringProfile" type="text" class="form-control form-control-sm" value="" placeholder="profilename">
                       </div>
                     </div>
@@ -394,12 +413,71 @@
           <h4 class="modal-title" id="addFaceLabel">showContent</h4>
         </div>
         <div class="modal-body">
-          <form>
-            <textarea id="textarea_content2" class="form-control" rows="6" placeholder="FaceIds"
-              style="font-size:14px; display:none"></textarea>
-
-          </form>
-          <pre id="textarea_content"></pre>
+          <div class="card card-primary card-outline card-outline-tabs">
+            <div class="card-header p-0 border-bottom-0">
+              <ul class="nav nav-tabs" id="preview-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="preview-tab-home" data-toggle="pill"
+                    href="#preview-tab-content" role="tab" aria-controls="preview-tab-content"
+                    aria-selected="true">Xlsx Preview</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pdf-tab-home" data-toggle="pill"
+                    href="#pdf-tab-content" role="tab" aria-controls="pdf-tab-content"
+                    aria-selected="false">PDF Preview</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="image-tab" data-toggle="pill"
+                    href="#image-tab-content" role="tab" aria-controls="image-tab-content"
+                    aria-selected="false">Image Preview</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="text-tab" data-toggle="pill"
+                    href="#text-tab-content" role="tab" aria-controls="text-tab-content"
+                    aria-selected="false">raw text</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="custom-tabs-four-tabContent">
+                <div class="tab-pane fade active show" id="preview-tab-content" role="tabpanel" aria-labelledby="preview-tab-home">
+                  <div id="htmlout" style="height:500px; width:auto"></div>
+                </div>
+                <div class="tab-pane fade" id="pdf-tab-content" role="tabpanel" aria-labelledby="pdf-tab-home">
+                  <header>
+                    <ul class="navigation">
+                      <li class="navigation__item">
+                        <a href="#" class="previous round" id="prev-page"><i class="fas fa-arrow-left"></i></a>
+                        <input type="number" value="1" id="current_page" />
+                        <a href="#" class="next round" id="next-page"><i class="fas fa-arrow-right"></i></a>
+                        Page <span id="page_num"></span> of <span id="page_count"></span>
+                      </li>
+                      <!-- Zoom In and Out -->
+                      <li class="navigation__item">
+                        <button class="zoom" id="zoom_in">
+                          <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="zoom" id="zoom_out">
+                          <i class="fas fa-search-minus"></i>
+                        </button>
+                      </li>
+                    </ul>
+                  </header>
+                  <canvas id="canvas" class="canvas__container"></canvas>
+                </div>
+                <div class="tab-pane fade" id="image-tab-content" role="tabpanel" aria-labelledby="image-tab">
+                  <img id="imagepreview_content" src="">
+                </div>
+                <div class="tab-pane fade" id="text-tab-content" role="tabpanel" aria-labelledby="text-tab">
+                  <form>
+                    <textarea id="textarea_content2" class="form-control" rows="6" placeholder="" style="font-size:14px; display:none"></textarea>
+                  </form>
+                  <pre id="textarea_content"></pre>
+                </div>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -442,7 +520,12 @@
   <script src="javascripts/moment.min.js"></script>
   <script src="javascripts/moment-timezone.min.js"></script>
   <script src="javascripts/moment-timezone-with-data.min.js"></script>
-
+  <script src="javascripts/xspreadsheet.js"></script>
+  <script src="javascripts/shim.min.js"></script>
+  <script src="javascripts/xlsx.mini.min.js"></script>
+  <script src="javascripts/xlsxspread.min.js"></script>  
+  <script src="javascripts/pdf.min.js"></script>
+  <script src="javascripts/pdf.worker.js"></script>
   <script>
 
   $(function () {
@@ -516,26 +599,26 @@
     // Events
     //
     $('#btnSearch').click(function () {
-      var searchtext = $('#searchtext').val();
-      var searchFilter = $('#search-filter').val();
-      var searchSelect = $('#search-select').val();
-      var searchOrderby = $('#search-orderby').val();
-      var queryType = $('#queryType').val();
-      var searchMode = $('#searchMode').val();
-      var searchFields = $('#searchFields').val();
-      var top = $('#top').val();
-      var skip = $('#skip').val();
-      var searchFacet = $('#search-facet').val()
-      var searchHighlight = $('#search-highlight').val();
-      var scoringProfile = $('#scoringProfile').val();
-      var scoringParameter = $('#scoringParameter').val();
+      let searchtext = $('#searchtext').val();
+      let searchFilter = $('#search-filter').val();
+      let searchSelect = $('#search-select').val();
+      let searchOrderby = $('#search-orderby').val();
+      let queryType = $('#queryType').val();
+      let searchMode = $('#searchMode').val();
+      let searchFields = $('#searchFields').val();
+      let top = $('#top').val();
+      let skip = $('#skip').val();
+      let searchFacet = $('#search-facet').val()
+      let searchHighlight = $('#search-highlight').val();
+      let scoringProfile = $('#scoringProfile').val();
+      let scoringParameter = $('#scoringParameter').val();
       
       if (!search_service || !index_name || !querykey) {
         return;
       }
 
       $.LoadingOverlay("show");
-      var params = {
+      let params = {
         'search': searchtext,
         'api-version': '2021-04-30-Preview',
         'queryType': queryType,
@@ -581,26 +664,30 @@
         data: params
 
       }).done(function (data, textStatus, jqXHR) {
-        var result = data['value'];
-        var ul = [];
-        var $result = $("#searchresult");
-        var $facetcard = $('#custom-tabs-four-home')
-        var searchcount = data['@odata.count'];
+        let result = data['value'];
+        let ul = [];
+        let $result = $("#searchresult");
+        let $facetcard = $('#custom-tabs-four-home')
+        let searchcount = data['@odata.count'];
         $result.empty();
         $facetcard.empty();
 
         result.forEach(function (element) {
-          var title = element['metadata_storage_name']
-          var size = element['metadata_storage_size']
-          var date = element['metadata_storage_last_modified']
-          var score = element['@search.score']
-          var mergedContent = element['merged_content']
-          var content = element['content'];
-          var html_content = ""
-          var html_title = ""
-          var html_head = ""
-          var html_hidden = ""
-          var useContent = "";
+          let title = element['metadata_storage_name']
+          let size = element['metadata_storage_size']
+          let date = element['metadata_storage_last_modified']
+          let score = element['@search.score']
+          let storage_path_plain = element['metadata_storage_path_plain'];
+          let storage_sas_token = element['metadata_storage_sas_token'];
+          let content_type = element['metadata_storage_content_type'];
+          let mergedContent = element['merged_content']
+          let content = element['content'];
+          let html_content = ""
+          let html_title = ""
+          let html_head = ""
+          let html_hidden = ""
+          let html_filepath = "";
+          let useContent = "";
 
           // The viewer that displays the contents of the document has priority
           // in the order of merged_content -> content.
@@ -614,8 +701,17 @@
           html_head = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() +
             "</span>, <span class='search-size'>" + formatBytes(size) +
             "</span>, @search.score:<span class='search-score'>" + score.toFixed(4) + "</span></div>"
-          html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
+          html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" 
+          
+          if( (storage_path_plain && storage_path_plain.length > 0) && (storage_sas_token && storage_sas_token.length > 0)){
+            if (content_type=="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || content_type=="application/pdf" || content_type.startsWith("image/")){
+              url = storage_path_plain + storage_sas_token
+              html_filepath = "<p class='filepath'>" + url + "</p>"
+            }
+          }
 
+          html_content_type = "<p class='content-type'>" + content_type + "</p>" + "</div>"
+          
           //@search.highlights 
           if (element['@search.highlights']) {
             let highlights = element['@search.highlights']
@@ -626,21 +722,21 @@
             let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, "");
             html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
           }
-          ul.push(html_title + html_head + html_content + html_hidden);
+          ul.push(html_title + html_head + html_content + html_hidden + html_filepath + html_content_type);
         });
 
         //@search.facets 
         if (data['@search.facets']) {
-          var facets = data['@search.facets']
-          var keyList = Object.keys(facets)
-          var div = [];
+          let facets = data['@search.facets']
+          let keyList = Object.keys(facets)
+          let div = [];
           for (let k1 in keyList) {
             //keyphrases: [{count: 16, value: "UK"}...
             //locations: [{count: 19, value: "London"}...
-            var facetItemList = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
-            var li = [];
+            let facetItemList = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
+            let li = [];
             for (let k2 in facetItemList) {
-              var facetName = facetItemList[k2].value;
+              let facetName = facetItemList[k2].value;
               list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetName), 25) + "<span class='badge bg-primary float-right'>" + facetItemList[k2].count + "</span></a></li>"
               li.push(list)
             }
@@ -659,7 +755,7 @@
         $('#json2').JSONView(params);
         $.LoadingOverlay("hide");
       }).fail(function (jqXHR, textStatus, errorThrown) {
-        var res = {}
+        let res = {}
         try {
           res = $.parseJSON(jqXHR.responseText);
           showModal(res.error.message);
@@ -676,28 +772,105 @@
       }
     });
 
+//=========================================================================
+//=========================================================================
+
     $(document).on('click', '.search-title-link', function () {
       $('#textarea_content').text('');
-      var filename = $(this).text();
-      var contenttext = $(this).parent().parent().find(".hide-content").text();
-      var modal = $('#modal-content');
+      let filename = $(this).text();
+      let contenttext = $(this).parent().parent().find(".hide-content").text();
+      let filepath = $(this).parent().parent().find(".filepath").text();
+      let content_type = $(this).parent().parent().find(".content-type").text();
+      let modal = $('#modal-content');
 
       $('#textarea_content').text(unescape(contenttext));
       $('#addFaceLabel').text(filename);
+
+      if (filepath && filepath.length > 0) {
+        //XLSX Preview
+        if (content_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+          var url = filepath;
+          /* set up an async GET request */
+          var req = new XMLHttpRequest();
+          req.open("GET", url, true);
+          req.responseType = "arraybuffer";
+          req.onload = function (e) {
+            if (req.readyState == 4 && (req.status == 200 || req.status == 304)) {
+              /* parse the data when it is received */
+              var data = new Uint8Array(req.response);
+              process_wb(XLSX.read(data, { type: 'array' }));
+              $('#pdf-tab-home').hide();
+              $('#preview-tab-home').show();
+              $('#preview-tab-home').tab('show');
+              $('#image-tab').hide();
+
+            } else {
+              console.log('Failed. HttpStatus: ' + req.statusText, req.status);
+              $('#pdf-tab-home').hide();
+              $('#preview-tab-home').hide();
+              $('#image-tab').hide();
+            }
+          };
+          req.send();
+
+        //PDF Preview
+        } else if (content_type == "application/pdf") {
+          var pdf = filepath;
+          // Load the Document
+          console.log(pdf)
+          pdfjsLib
+            .getDocument(pdf)
+            .promise.then((doc) => {
+              $initialState.pdfDoc = doc;
+              $('#page_count').html($initialState.pdfDoc.numPages);
+              renderPage();
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+
+          $('#preview-tab-home').hide();
+          $('#pdf-tab-home').show();
+          $('#pdf-tab-home').tab('show')
+          $('#image-tab').hide();
+
+        //Image Preview
+        } else if (content_type.startsWith("image/")) {
+          var imageurl = filepath;
+          $('#imagepreview_content').attr('src', imageurl);
+          
+          $('#preview-tab-home').hide();
+          $('#pdf-tab-home').hide();
+          $('#image-tab').show();
+          $('#image-tab').tab('show')
+
+        } else {
+          $('#preview-tab-home').hide();
+          $('#pdf-tab-home').hide();
+          $('#image-tab').hide();
+          $('#text-tab').tab('show')
+        }
+      } else {
+        $('#preview-tab-home').hide();
+        $('#pdf-tab-home').hide();
+        $('#image-tab').hide();
+        $('#text-tab').tab('show')
+      }
+
       $('#modal-content').modal('show');
       return false;
     });
 
     $(document).on('click', '.facet-link', function () {
-      var facetitem = $($(this).contents()[0]).text();
-      var facetField = $(this).data('facetfield');
-      var searchFilter = $('#search-filter').val();
-      var filterString = "";
-      var filterNumber = "";
-      var filterCollection = "";
-      var filterString_add = "";
-      var filterNumber_add = "";
-      var filterCollection_add = "";
+      let facetitem = $($(this).contents()[0]).text();
+      let facetField = $(this).data('facetfield');
+      let searchFilter = $('#search-filter').val();
+      let filterString = "";
+      let filterNumber = "";
+      let filterCollection = "";
+      let filterString_add = "";
+      let filterNumber_add = "";
+      let filterCollection_add = "";
 
       if (facetitem.length > 0) {
         filterString = facetField + " eq '" + facetitem + "'";
@@ -724,8 +897,8 @@
     });
 
     $('.btnAddFacet').click(function () {
-      var outputString = $(this).attr("data-output");
-      var outputButtonText = $(this).text();
+      let outputString = $(this).attr("data-output");
+      let outputButtonText = $(this).text();
 
       if (outputString.length > 0) {
         $('#search-filter').val(outputString);
@@ -755,19 +928,19 @@
 
     //Download CSV Data
     $('#btnDownload').click(function () {
-      var arrStandard = $('.post').map(function (index, element) {
+      let arrStandard = $('.post').map(function (index, element) {
         return $(this).find('.search-title-link,.search-date,.search-size,.search-score,.highlight').map(function () {
           return $(this).text()
         });
       });
 
-      var header = ['std_title', 'std_date', 'std_size', 'std_score', 'std_highlight'];
-      var crlf = '\r\n';
-      var csv = arrStandard.map(function (i, row) { return row.toArray().join(','); }).toArray().join('\r\n');
-      var bom = new Uint8Array([0xEF, 0xBB, 0xBF])
-      var blob = new Blob([bom, header, crlf, csv], { type: 'text/csv' })
-      var url = (window.URL || window.webkitURL).createObjectURL(blob)
-      var a = document.getElementById('btnDownload')
+      let header = ['std_title', 'std_date', 'std_size', 'std_score', 'std_highlight'];
+      let crlf = '\r\n';
+      let csv = arrStandard.map(function (i, row) { return row.toArray().join(','); }).toArray().join('\r\n');
+      let bom = new Uint8Array([0xEF, 0xBB, 0xBF])
+      let blob = new Blob([bom, header, crlf, csv], { type: 'text/csv' })
+      let url = (window.URL || window.webkitURL).createObjectURL(blob)
+      let a = document.getElementById('btnDownload')
       a.download = 'standardsearchdata.csv'
       a.href = url
     });
@@ -795,6 +968,7 @@
 
   });
   </script>
+  <script src="javascripts/filepreview.js"></script>
 
 
 

@@ -70,7 +70,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="semantic.html" class="nav-link active" id="nav2">
+                  <a href="semantic.html" class="nav-link" id="nav2">
                     <i class="fa fa-flask" aria-hidden="true"></i>
                     <p class="mr-2 ml-1">Semantic Search</p>
                   </a>
@@ -93,17 +93,17 @@
                     <p class="mr-2 ml-1">Suggest</p>
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
+                <li class="nav-item menu-open">
+                  <a href="#" class="nav-link ">
                     <i class="fas fa-folder"></i>
                     <p class="mr-2 ml-1">
                       Old Version
                       <i class="right fas fa-angle-left"></i>
                     </p>
                   </a>
-                  <ul class="nav nav-treeview" style="display: none;">
+                  <ul class="nav nav-treeview" style="display: block;">
                     <li class="nav-item">
-                      <a href="semantic_old.html" class="nav-link">
+                      <a href="semantic_old.html" class="nav-link active">
                         <i class="fa fa-flask"></i>
                         <p class="mr-2 ml-1"><small>Semantic Search (2020-06-30-Prev)</small></p>
                       </a>
@@ -135,7 +135,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>Semantic Search (2021-04-30-Preview)</h1>
+              <h1>Semantic Search (2020-06-30-Preview)</h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -196,7 +196,7 @@
                   <div class="row">
                     <div class="col-3">
                       <div class="form-group">
-                        <label>queryType</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <label>queryType</label>
                         <select id="queryType" class="form-control form-control-sm">
                           <option>simple</option>
                           <option>full</option>
@@ -206,7 +206,7 @@
                     </div>
                     <div class="col-3">
                       <div class="form-group">
-                        <label>searchMode</label> <a href="https://learn.microsoft.com/azure/search/search-query-simple-examples#example-1-full-text-search" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <label>searchMode</label>
                         <select id="searchMode" class="form-control form-control-sm">
                           <option>any</option>
                           <option>all</option>
@@ -215,13 +215,13 @@
                     </div>
                     <div class="col-3">
                       <div class="form-group">
-                        <label>$skip</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <label>$skip</label>
                         <input id="skip" type="number" class="form-control form-control-sm" value="0">
                       </div>
                     </div>
                     <div class="col-3">
                       <div class="form-group">
-                        <label>$top</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <label>$top</label>
                         <input id="top" type="number" class="form-control form-control-sm" value="50">
                       </div>
                     </div>
@@ -231,14 +231,14 @@
                   <div class="row">
                     <div class="col-6">
                       <div class="form-group">
-                        <label>searchFields</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <label>searchFields</label>
                         <input id="searchFields" type="text" class="form-control form-control-sm" value="content, merged_content, keyphrases"
                           placeholder="content, merged_content, keyphrases">
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="form-group">
-                        <label>$filter</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-filter" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <label>$filter</label>
                         <input id="search-filter" type="text" class="form-control form-control-sm" value="" placeholder="Rating gt 0">
                       </div>
                     </div>
@@ -247,13 +247,13 @@
                   <div class="row">
                     <div class="col-6">
                       <div class="form-group">
-                        <label>$select</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-select" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <label>$select</label>
                         <input id="search-select" type="text" class="form-control form-control-sm" value="" placeholder="content">
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="form-group">
-                        <label>$orderby</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-orderby" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <label>$orderby</label>
                         <input id="search-orderby" type="text" class="form-control form-control-sm" value=""
                           placeholder="metadata_storage_size desc">
                       </div>
@@ -261,24 +261,17 @@
                   </div>
                 
                   <div class="form-group">
-                    <label>facet</label> <a href="https://learn.microsoft.com/azure/search/search-faceted-navigation#facets-syntax" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    <label>facet</label>
                     <input id="search-facet" type="text" class="form-control form-control-sm"
                       value="&quot;keyphrases,count:5&quot;, &quot;organizations,count:5&quot;, &quot;locations,count:5&quot;"
                       placeholder="&quot;keyphrases,count:5&quot;, &quot;organizations,count:5&quot;">
                   </div>
 
                   <div class="form-group">
-                    <label>highlight</label> <a href="https://learn.microsoft.com/azure/search/search-pagination-page-layout#hit-highlighting" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    <label>highlight</label>
                     <input id="search-highlight" type="text" class="form-control form-control-sm"
                       value="content-3, merged_content-3, keyphrases-3"
                       placeholder="content-3, merged_content-3, keyphrases-3">
-                  </div>
-
-                  <div class="form-group">
-                    <label>semanticConfiguration</label> <a href="https://learn.microsoft.com/azure/search/semantic-how-to-query-request?tabs=semanticConfiguration%2Cportal#create-a-semantic-configuration" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
-                    <input id="search-semanticConfiguration" type="text" class="form-control form-control-sm"
-                      value=""
-                      placeholder="config1">
                   </div>
                 </div>
 
@@ -333,6 +326,8 @@
                         <button id="toggle-level3-btn" class="btn btn-outline-secondary btn-xs">Toggle level3</button>
                         <div id="json"></div>
                       </div>
+
+
                     </div>
                   </div>
                   <!-- /.card -->
@@ -602,7 +597,6 @@
       let skip = $('#skip').val();
       let searchFacet = $('#search-facet').val()
       let searchHighlight = $('#search-highlight').val();
-      let semanticConfiguration = $('#search-semanticConfiguration').val();
 
       if (!search_service || !index_name || !querykey) {
         return;
@@ -611,7 +605,7 @@
       $.LoadingOverlay("show");
       let params = {
         'search': searchtext,
-        'api-version': '2021-04-30-Preview',
+        'api-version': '2020-06-30-Preview',
         'queryType': queryType,
         'searchMode': searchMode,
         '$count': true,
@@ -637,13 +631,9 @@
       if (searchHighlight.length > 0) {
         params["highlight"] = searchHighlight
       }
-      if (semanticConfiguration.length > 0) {
-        params["semanticConfiguration"] = semanticConfiguration
-      }
 
       //Semantic Search Parameters
       params["answers"] = "extractive";
-      params["captions"] = "extractive";
       params["queryLanguage"] = "ja-jp";
 
       $.ajax({
@@ -706,8 +696,7 @@
             "</span>, <span class='search-size'>" + formatBytes(size) +
             "</span>, @sc:<span class='search-score'>" + score.toFixed(4) +
             "</span>, @rsc:<span class='search-rerankerScore'>" + rerankerScore.toFixed(4) + "</span></div>"
-          html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>"
-
+          html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" 
           
           if( (storage_path_plain && storage_path_plain.length > 0) && (storage_sas_token && storage_sas_token.length > 0)){
             if (content_type=="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || content_type=="application/pdf" || content_type.startsWith("image/")){
@@ -742,7 +731,7 @@
             for (let key in highlights) {
               highlightsList.push(highlights[key]);
             }
-            let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, " / ");
+            let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, "");
             html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
           }
 
@@ -757,11 +746,13 @@
           for (let k1 in keyList) {
             let facetItemList = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
             let li = [];
+
             for (let k2 in facetItemList) {
-                let facetName = facetItemList[k2].value;
-                list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetName), 100) + "<span class='badge bg-primary float-right'>" + facetItemList[k2].count + "</span></a></li>"
-                li.push(list)
-              }
+              let facetName = facetItemList[k2].value;
+              list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetName), 25) + "<span class='badge bg-primary float-right'>" + facetItemList[k2].count + "</span></a></li>"
+              li.push(list)
+            }
+
             card1 = '<div class="card"><div class="card-header"><h3 class="card-title">' + keyList[k1] + '</h3>'
             card2 = '<div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0" style="display: block;">'
             card3 = '<ul id="facet-organizations" class="nav nav-pills flex-column">' + li.join("") + '</ul></div></div>'
@@ -898,15 +889,9 @@
         $('#image-tab').hide();
         $('#text-tab').tab('show')
       }
-
       $('#modal-content').modal('show');
       return false;
     });
-
-    $('#modal-content').on('hidden.bs.modal', function (e) {
-      //console.log("modal closed. hidden.bs.modal");
-      //xspr = {};
-    })
 
     $(document).on('click', '.facet-link', function () {
       let facetitem = $($(this).contents()[0]).text();
