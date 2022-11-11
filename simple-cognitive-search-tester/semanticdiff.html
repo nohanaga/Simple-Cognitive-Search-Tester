@@ -267,6 +267,13 @@
                       value="content-3, merged_content-3, keyphrases-3"
                       placeholder="content-3, merged_content-3, keyphrases-3">
                   </div>
+
+                  <div class="form-group">
+                    <label>semanticConfiguration</label> <a href="https://learn.microsoft.com/azure/search/semantic-how-to-query-request?tabs=semanticConfiguration%2Cportal#create-a-semantic-configuration" target=”_blank”><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    <input id="search-semanticConfiguration" type="text" class="form-control form-control-sm"
+                      value="test1"
+                      placeholder="config1">
+                  </div>
                 </div>
 
 
@@ -338,7 +345,7 @@
               <div class="col-12 col-sm-6 semantic-card">
                 <div class="card card-lightblue" id="semantic">
                   <div class="card-header p-1 text-center">
-                    Semantic Ranking
+                    Semantic Ranking (2021-04-30-Preview)
                   </div>
                 </div>
                 <div class="search-header">
@@ -480,6 +487,16 @@
         return str;
       }
     };
+    function escapeSpecificHtml(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+        .replace(/&lt;em&gt;/g, "<em>")
+        .replace(/&lt;\/em&gt;/g, "</em>");
+    }
     function showModal(message) {
       var modal = $('#modal-default');
       modal.find('.modal-body p').text(message);
@@ -553,7 +570,8 @@
         'searchMode': searchMode,
         '$count': true,
         '$top': Number(top),
-        '$skip': Number(skip)
+        '$skip': Number(skip),
+        'featuresMode': "enabled"
       };
 
       if (searchFilter.length > 0) {
@@ -624,16 +642,22 @@
             } else if (content && content.length > 0) {
               useContent = content;
             }
+
             html_title = "<div class='post post-diff post-standard" + " rank-" + (i + 1) + "' id='rank-" + (i + 1) + "'><div class='search-title'>" + "[" + (i + 1) + "] " + "<a href='#' class='search-title-link' title='" + title + "'>" + title + "</a></div>"
             html_head = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() +
               "</span>, <span class='search-size'>" + formatBytes(size) +
               "</span>, @sc:<span class='search-score'>" + score.toFixed(4) + "</span></div>"
             html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>" + "</div>"
 
+            //@search.highlights 
             if (element['@search.highlights']) {
               let highlights = element['@search.highlights']
-              let content = highlights['content']; // [String]
-              html_content = "<p class='highlight'>" + content.join("") + "</p>"
+              let highlightsList = [];
+              for (let key in highlights) {
+                highlightsList.push(highlights[key]);
+              }
+              let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, " / ");
+              html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
             }
 
             ul.push(html_title + html_head + html_content + html_hidden);
@@ -665,6 +689,12 @@
         params["queryType"] = "semantic";
         params["answers"] = "extractive";
         params["queryLanguage"] = "ja-jp";
+        params["api-version"] = "2021-04-30-Preview";
+
+        let semanticConfiguration = $('#search-semanticConfiguration').val();
+        if (semanticConfiguration.length > 0) {
+          params["semanticConfiguration"] = semanticConfiguration
+        }
 
         //============================================================================
         // 2, Get a Semantic Search result
@@ -724,8 +754,12 @@
 
             if (element['@search.highlights']) {
               let highlights = element['@search.highlights']
-              let content = highlights['content']; // [String]
-              html_content = "<p class='highlight'>" + content.join("") + "</p>"
+              let highlightsList = [];
+              for (let key in highlights) {
+                highlightsList.push(highlights[key]);
+              }
+              let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, " / ");
+              html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
             }
 
             ul.push(html_title + html_head + html_content + html_hidden);
