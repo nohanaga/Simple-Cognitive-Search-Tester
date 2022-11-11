@@ -616,7 +616,8 @@
         'searchMode': searchMode,
         '$count': true,
         '$top': Number(top),
-        '$skip': Number(skip)
+        '$skip': Number(skip),
+        'featuresMode': "enabled"
       };
 
       if (searchFilter.length > 0) {
