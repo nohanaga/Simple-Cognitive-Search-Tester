@@ -307,11 +307,24 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label>semanticConfiguration</label> <a href="https://learn.microsoft.com/azure/search/semantic-how-to-query-request?tabs=semanticConfiguration%2Cportal#create-a-semantic-configuration" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
-                    <input id="search-semanticConfiguration" type="text" class="form-control form-control-sm"
-                      value=""
-                      placeholder="config1">
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>semanticConfiguration</label> <a href="https://learn.microsoft.com/azure/search/semantic-how-to-query-request?tabs=semanticConfiguration%2Cportal#create-a-semantic-configuration" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="search-semanticConfiguration" type="text" class="form-control form-control-sm"
+                          value=""
+                          placeholder="config1">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>queryLanguage</label> <a
+                          href="https://learn.microsoft.com/azure/search/semantic-how-to-query-request?tabs=semanticConfiguration%2Cportal#create-a-semantic-configuration"
+                          target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="search-queryLanguage" type="text" class="form-control form-control-sm" value="en-us"
+                          placeholder="en-us">
+                      </div>
+                    </div>
                   </div>
 
                   <div class="row">
@@ -682,6 +695,7 @@
       let searchFacet = $('#search-facet').val()
       let searchHighlight = $('#search-highlight').val();
       let semanticConfiguration = $('#search-semanticConfiguration').val();
+      let queryLanguage = $('#search-queryLanguage').val();
       let embeddings = $('#embeddings').val();
       let vectorFields = $('#vector-fields').val();
       let k = $('#k').val();
@@ -727,11 +741,13 @@
       if (semanticConfiguration.length > 0) {
         params["semanticConfiguration"] = semanticConfiguration
       }
+      if (queryLanguage.length > 0) {
+        params["queryLanguage"] = queryLanguage
+      }
       if (queryType == "semantic") {
         //Semantic Search Parameters
         params["answers"] = "extractive";
         params["captions"] = "extractive";
-        params["queryLanguage"] = "ja-jp";
       }
 
       if (embeddings.length > 0 && $("#embedCheck").prop("checked")) {
