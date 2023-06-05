@@ -319,7 +319,7 @@
                     <div class="col-6">
                       <div class="form-group">
                         <label>queryLanguage</label> <a
-                          href="https://learn.microsoft.com/azure/search/semantic-how-to-query-request?tabs=semanticConfiguration%2Cportal#create-a-semantic-configuration"
+                          href="https://learn.microsoft.com/rest/api/searchservice/preview-api/search-documents#querylanguage"
                           target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         <input id="search-queryLanguage" type="text" class="form-control form-control-sm" value="en-us"
                           placeholder="en-us">
@@ -330,14 +330,14 @@
                   <div class="row">
                     <div class="col-6">
                       <div class="form-group">
-                        <label class="vectorlabel">vector fields</label> <i class="fa fa-info-circle" aria-hidden="true" title="Vector fields of type Collection(Edm.Single) to be included in the query."></i>
+                        <label class="vectorlabel">vector.fields</label> <i class="fa fa-info-circle" aria-hidden="true" title="Vector fields of type Collection(Edm.Single) to be included in the query."></i>
                         <input id="vector-fields" type="text" class="form-control form-control-sm vectorinput" value="contentVector"
                           placeholder="contentVector">
                       </div>
                     </div>
                     <div class="col-3">
                       <div class="form-group">
-                        <label class="vectorlabel">k</label> <i class="fa fa-info-circle" aria-hidden="true" title="The number of nearest neighbors to return as top hits."></i>
+                        <label class="vectorlabel">vector.k</label> <i class="fa fa-info-circle" aria-hidden="true" title="The number of nearest neighbors to return as top hits."></i>
                         <input id="k" type="number" class="form-control form-control-sm vectorinput" value="10">
                       </div>
                     </div>
