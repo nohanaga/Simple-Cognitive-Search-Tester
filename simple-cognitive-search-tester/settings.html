@@ -75,6 +75,12 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a href="vector.html" class="nav-link" id="nav6">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Vector Search</p>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a href="semanticdiff.html" class="nav-link" id="nav3">
                     <i class="fa fa-flask" aria-hidden="true"></i>
                     <p class="mr-2 ml-1">Semantic Diff</p>
@@ -168,6 +174,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-12 col-sm-12">
+                <h4>Azure Cognitive Search</h3>
                 <div class="form-group">
                   <label>search_service:</label>
                   <input id="search_service" class="form-control form-control-sm" type="text"
@@ -183,6 +190,23 @@
                   <input id="querykey" class="form-control form-control-sm" type="password"
                     placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required>
                 </div>
+              <h4>Azure OpenAI Service</h3>
+                <div class="form-group">
+                  <label>AZURE_OPENAI_SERVICE:</label>
+                  <input id="AZURE_OPENAI_SERVICE" class="form-control form-control-sm" type="text"
+                    placeholder="openai-service1" required>
+                </div>
+                <div class="form-group">
+                  <label>AZURE_OPENAI_GPT_EMBED_DEPLOYMENT:</label>
+                  <input id="AZURE_OPENAI_GPT_EMBED_DEPLOYMENT" class="form-control form-control-sm" type="text"
+                    placeholder="text-embedding-ada-002" required>
+                </div>
+                <div class="form-group">
+                  <label>AZURE_OPENAI_GPT_KEY:</label>
+                  <input id="AZURE_OPENAI_GPT_KEY" class="form-control form-control-sm" type="password"
+                    placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required>
+                </div>
+
                 <div class="alert alert-danger alert-dismissible">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h5><i class="icon fas fa-ban"></i> 警告!</h5>
@@ -295,10 +319,16 @@
         var search_service = $('#search_service');
         var index_name = $('#index_name');
         var querykey = $('#querykey');
+        var AZURE_OPENAI_SERVICE = $('#AZURE_OPENAI_SERVICE');
+        var AZURE_OPENAI_GPT_EMBED_DEPLOYMENT = $('#AZURE_OPENAI_GPT_EMBED_DEPLOYMENT');
+        var AZURE_OPENAI_GPT_KEY = $('#AZURE_OPENAI_GPT_KEY');
 
         localStorage.setItem("search_service", search_service.val());
         localStorage.setItem("index_name", index_name.val());
         localStorage.setItem("querykey", querykey.val());
+        localStorage.setItem("AZURE_OPENAI_SERVICE", AZURE_OPENAI_SERVICE.val());
+        localStorage.setItem("AZURE_OPENAI_GPT_EMBED_DEPLOYMENT", AZURE_OPENAI_GPT_EMBED_DEPLOYMENT.val());
+        localStorage.setItem("AZURE_OPENAI_GPT_KEY", AZURE_OPENAI_GPT_KEY.val());
         showModal("localstorage にキー情報を保存しました。");
       });
 
@@ -306,10 +336,15 @@
         search_service = localStorage.getItem("search_service");
         index_name = localStorage.getItem("index_name");
         querykey = localStorage.getItem("querykey");
+        AZURE_OPENAI_SERVICE = localStorage.getItem("AZURE_OPENAI_SERVICE");
+        AZURE_OPENAI_GPT_EMBED_DEPLOYMENT = localStorage.getItem("AZURE_OPENAI_GPT_EMBED_DEPLOYMENT");
+        AZURE_OPENAI_GPT_KEY = localStorage.getItem("AZURE_OPENAI_GPT_KEY");
         $('#search_service').val(search_service);
         $('#index_name').val(index_name);
         $('#querykey').val(querykey);
-        
+        $('#AZURE_OPENAI_SERVICE').val(AZURE_OPENAI_SERVICE);
+        $('#AZURE_OPENAI_GPT_EMBED_DEPLOYMENT').val(AZURE_OPENAI_GPT_EMBED_DEPLOYMENT);
+        $('#AZURE_OPENAI_GPT_KEY').val(AZURE_OPENAI_GPT_KEY);
       } else {
         showModal("localstorage に対応していません。");
       }
@@ -318,9 +353,15 @@
         localStorage.removeItem("search_service");
         localStorage.removeItem("index_name");
         localStorage.removeItem("querykey");
+        localStorage.removeItem("AZURE_OPENAI_SERVICE");
+        localStorage.removeItem("AZURE_OPENAI_GPT_EMBED_DEPLOYMENT");
+        localStorage.removeItem("AZURE_OPENAI_GPT_KEY");
         $('#search_service').val("");
         $('#index_name').val("");
         $('#querykey').val("");
+        $('#AZURE_OPENAI_SERVICE').val("");
+        $('#AZURE_OPENAI_GPT_EMBED_DEPLOYMENT').val("");
+        $('#AZURE_OPENAI_GPT_KEY').val("");
         showModal("localstorage からキー情報を削除しました。");
       });
 

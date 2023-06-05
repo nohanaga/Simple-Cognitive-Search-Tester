@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Azure AI Tester | Vector Search</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="stylesheets/fontawesome-free/css/all.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="stylesheets/adminlte.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="stylesheets/bootstrap-4.min.css">
+  <link rel="stylesheet" href="stylesheets/jquery.jsonview.min.css">
+  <link rel="stylesheet" href="stylesheets/azureaitester.css">
+  <link rel="stylesheet" href="stylesheets/xspreadsheet.css"/>
+  <link rel="stylesheet" href="stylesheets/pdf.css" />
+  <link rel="stylesheet" href="stylesheets/icheck-bootstrap.min.css" />
+</head>
+
+<body class="hold-transition sidebar-mini">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-dark navbar-lightblue">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="index.html" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="#" class="nav-link">Contact</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->
+    <!-- Sidebar -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-link">
+        <img src="images/azure.svg" width="24" class="mr-2 ml-2">
+        <span class="brand-text font-weight-light">Azure AI Tester</span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+            <li class="nav-header">Cognitive Services</li>
+            <li class="nav-item has-treeview menu-open">
+              <a href="index.html" class="nav-link active">
+
+                <i class="fas fa-search"></i>
+                <p class="mr-2 ml-1">
+                  Azure Cognitive Search
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="index.html" class="nav-link" id="nav1">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Standard Search</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="semantic.html" class="nav-link" id="nav2">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Semantic Search</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="vector.html" class="nav-link active" id="nav6">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Vector Search</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="semanticdiff.html" class="nav-link" id="nav3">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Semantic Diff</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="autocomplete.html" class="nav-link" id="nav4">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Autocomplete</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="suggest.html" class="nav-link" id="nav5">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <p class="mr-2 ml-1">Suggest</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="fas fa-folder"></i>
+                    <p class="mr-2 ml-1">
+                      Old Version
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                      <a href="semantic_old.html" class="nav-link">
+                        <i class="fa fa-flask"></i>
+                        <p class="mr-2 ml-1"><small>Semantic Search (2020-06-30-Prev)</small></p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-header">Settings</li>
+            <li class="nav-item has-treeview menu-open">
+            <li class="nav-item">
+              <a href="settings.html" class="nav-link" id="nav11">
+                <i class="fa fa-cog"></i>
+                <p class="mr-2 ml-1">Settings</p>
+              </a>
+            </li>
+            </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Vector Search</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Semantic Search</li>
+              </ol>
+            </div>
+            <div class="col-sm-12">
+              <h6>Approximate nearest neighbor (ANN) search is available for vector fields.<br>
+              In addition, a hybrid search with keyword search is available. The checkbox to the left of the search box controls the features.</h6>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Search</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                title="Collapse">
+                <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                <i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-sm-8">
+
+                <div class="input-group input-group" style="margin-bottom: 13px;">
+                  <div class="icheck-primary d-inline">
+                    <input type="checkbox" id="searchCheck">
+                    <label for="searchCheck" title="include search words">
+                    </label>
+                  </div>
+                  <input id="searchtext" type="text" class="form-control" value="" placeholder="Search Words">
+                  <span class="input-group-append">
+                    <button id="btnGetembed" type="button" class="btn btn-success btn-flat">Get Embeddings</button>
+                  </span>
+                </div>
+
+                <div class="input-group input-group" style="margin-bottom: 13px;">
+                  <div class="icheck-primary d-inline">
+                    <input type="checkbox" id="embedCheck" checked="">
+                    <label for="embedCheck" title="include embeddings">
+                    </label>
+                  </div>
+                    <input id="embeddings" type="text" class="form-control" value="" placeholder="embeddings">
+                    <span class="input-group-append">
+                      <button id="btnVectorEditor" type="button" class="btn btn-secondary btn-flat">✎</button>&nbsp;
+                      <button id="btnSearch" type="button" class="btn btn-info btn-flat">Search!</button>
+                    </span>
+                </div>
+
+                <div class="row">
+                  <div class="col-10 col-sm-10">
+                    <button class="btn btn-block btn-info btn-flat btn-xs" type="button" data-toggle="collapse" data-target="#collapseExample"
+                      aria-expanded="false" aria-controls="collapseExample">
+                      Params <i class="fa fa-chevron-down"></i>
+                    </button>
+                  </div>
+                  <div class="col-2 col-sm-2">
+                    <button id="btnClear" class="btn btn-block btn-info btn-flat btn-xs" type="button">
+                      Clear
+                    </button>
+                  </div>
+                </div>
+
+
+                <br>
+                <div class="collapse" id="collapseExample">
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>queryType</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <select id="queryType" class="form-control form-control-sm">
+                          <option selected>simple</option>
+                          <option>full</option>
+                          <option>semantic</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>searchMode</label> <a href="https://learn.microsoft.com/azure/search/search-query-simple-examples#example-1-full-text-search" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <select id="searchMode" class="form-control form-control-sm">
+                          <option>any</option>
+                          <option>all</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>skip</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="skip" type="number" class="form-control form-control-sm" value="0">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>top</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="top" type="number" class="form-control form-control-sm" value="50">
+                      </div>
+                    </div>
+                
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>searchFields</label> <a href="https://learn.microsoft.com/azure/search/search-query-overview" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="searchFields" type="text" class="form-control form-control-sm" value=""
+                          placeholder="content, merged_content, keyphrases">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>filter</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-filter" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="search-filter" type="text" class="form-control form-control-sm" value="" placeholder="Rating gt 0">
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>select</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-select" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="search-select" type="text" class="form-control form-control-sm" value="content, category, title" placeholder="content">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>orderby</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-orderby" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="search-orderby" type="text" class="form-control form-control-sm" value=""
+                          placeholder="metadata_storage_size desc">
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>facet</label> <a href="https://learn.microsoft.com/azure/search/search-faceted-navigation#facets-syntax"
+                          target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="search-facet" type="text" class="form-control form-control-sm" value=""
+                          placeholder="&quot;keyphrases,count:5&quot;, &quot;organizations,count:5&quot;">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>highlight</label> <a
+                          href="https://learn.microsoft.com/azure/search/search-pagination-page-layout#hit-highlighting"
+                          target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                        <input id="search-highlight" type="text" class="form-control form-control-sm" value="content-3"
+                          placeholder="content-3, merged_content-3, keyphrases-3">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>semanticConfiguration</label> <a href="https://learn.microsoft.com/azure/search/semantic-how-to-query-request?tabs=semanticConfiguration%2Cportal#create-a-semantic-configuration" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    <input id="search-semanticConfiguration" type="text" class="form-control form-control-sm"
+                      value=""
+                      placeholder="config1">
+                  </div>
+
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label class="vectorlabel">vector fields</label> <i class="fa fa-info-circle" aria-hidden="true" title="Vector fields of type Collection(Edm.Single) to be included in the query."></i>
+                        <input id="vector-fields" type="text" class="form-control form-control-sm vectorinput" value="contentVector"
+                          placeholder="contentVector">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label class="vectorlabel">k</label> <i class="fa fa-info-circle" aria-hidden="true" title="The number of nearest neighbors to return as top hits."></i>
+                        <input id="k" type="number" class="form-control form-control-sm vectorinput" value="10">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="semantic-answer">
+
+                </div>
+                <div class="search-header">
+                  <span id="search-count">1 - 10 of 10</span>
+                  <a id="btnDownload" class="btn btn-outline-secondary btn-xs float-right" title="csv download" type="button"><i class="fa fa-download" aria-hidden="true"></i></a>
+                </div>
+                <div id="searchresult">
+                  <div class="post">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="card card-primary card-outline card-outline-tabs">
+                  <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill"
+                          href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home"
+                          aria-selected="true">Filters</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
+                          href="#custom-tabs-four-profile2" role="tab" aria-controls="custom-tabs-four-profile2"
+                          aria-selected="false">Request Json</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
+                          href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile"
+                          aria-selected="false">Response Json</a>
+                      </li>
+
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-four-tabContent">
+                      <div class="tab-pane fade active show" id="custom-tabs-four-home" role="tabpanel"
+                        aria-labelledby="custom-tabs-four-home-tab">
+                      </div>
+                      <div class="tab-pane fade" id="custom-tabs-four-profile2" role="tabpanel"
+                        aria-labelledby="custom-tabs-four-profile-tab">
+                        <div id="json2"></div>
+                      </div>
+                      <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel"
+                        aria-labelledby="custom-tabs-four-profile-tab">
+                        <button id="toggle-btn" class="btn btn-outline-secondary btn-xs">Collapse/Expand</button>
+                        <button id="toggle-level1-btn" class="btn btn-outline-secondary btn-xs">Toggle level1</button>
+                        <button id="toggle-level2-btn" class="btn btn-outline-secondary btn-xs">Toggle level2</button>
+                        <button id="toggle-level3-btn" class="btn btn-outline-secondary btn-xs">Toggle level3</button>
+                        <div id="json"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.card -->
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer">
+          </div>
+          <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <footer class="main-footer">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 0.0.1
+      </div>
+      <strong>Copyright &copy; 2020 All rights reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+  <div class="modal fade" id="modal-facet">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><i class="fas fa-info-circle"></i></button> Select filter syntax</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="btn-group-vertical" style="width: 100%;">
+            <label>Edm.String</label>
+            <button type="button" class="btn btn-block btn-default btnAddFacet" id="btnAddFacet-string" data-output=""></button>
+            <label>Edm.Int, Edm.DateTimeOffset etc.</label>
+            <button type="button" class="btn btn-block btn-default btnAddFacet" id="btnAddFacet-number" data-output=""></button>
+            <label>Collection(Edm.String) etc.</label>
+            <button type="button" class="btn btn-block btn-default btnAddFacet" id="btnAddFacet-collection" data-output=""></button>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade" id="modal-content" tabindex="-1" role="dialog" aria-labelledby="addFaceModalLabel">
+    <div class="modal-dialog modal-dialog-fluid" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="addFaceLabel">showContent</h4>
+        </div>
+        <div class="modal-body">
+          <div class="card card-primary card-outline card-outline-tabs">
+            <div class="card-header p-0 border-bottom-0">
+              <ul class="nav nav-tabs" id="preview-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="preview-tab-home" data-toggle="pill"
+                    href="#preview-tab-content" role="tab" aria-controls="preview-tab-content"
+                    aria-selected="true">Xlsx Preview</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pdf-tab-home" data-toggle="pill"
+                    href="#pdf-tab-content" role="tab" aria-controls="pdf-tab-content"
+                    aria-selected="false">PDF Preview</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="image-tab" data-toggle="pill"
+                    href="#image-tab-content" role="tab" aria-controls="image-tab-content"
+                    aria-selected="false">Image Preview</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="text-tab" data-toggle="pill"
+                    href="#text-tab-content" role="tab" aria-controls="text-tab-content"
+                    aria-selected="false">raw text</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="custom-tabs-four-tabContent">
+                <div class="tab-pane fade active show" id="preview-tab-content" role="tabpanel" aria-labelledby="preview-tab-home">
+                  <div id="htmlout" style="height:500px; width:auto"></div>
+                </div>
+                <div class="tab-pane fade" id="pdf-tab-content" role="tabpanel" aria-labelledby="pdf-tab-home">
+                  <header>
+                    <ul class="navigation">
+                      <li class="navigation__item">
+                        <a href="#" class="previous round" id="prev-page"><i class="fas fa-arrow-left"></i></a>
+                        <input type="number" value="1" id="current_page" />
+                        <a href="#" class="next round" id="next-page"><i class="fas fa-arrow-right"></i></a>
+                        Page <span id="page_num"></span> of <span id="page_count"></span>
+                      </li>
+                      <!-- Zoom In and Out -->
+                      <li class="navigation__item">
+                        <button class="zoom" id="zoom_in">
+                          <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="zoom" id="zoom_out">
+                          <i class="fas fa-search-minus"></i>
+                        </button>
+                      </li>
+                    </ul>
+                  </header>
+                  <canvas id="canvas" class="canvas__container"></canvas>
+                </div>
+                <div class="tab-pane fade" id="image-tab-content" role="tabpanel" aria-labelledby="image-tab">
+                  <img id="imagepreview_content" src="">
+                </div>
+                <div class="tab-pane fade" id="text-tab-content" role="tabpanel" aria-labelledby="text-tab">
+                  <form>
+                    <textarea id="textarea_content2" class="form-control" rows="6" placeholder="" style="font-size:14px; display:none"></textarea>
+                  </form>
+                  <pre id="textarea_content"></pre>
+                </div>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-vector">
+    <div class="modal-dialog modal-dialog-fluid" style="width: 30%;margin: 1.75rem auto;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><i class="fa fa-exclamation-triangle"></i></button> Info</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="white-space: pre-wrap;">Embeddings Vector (<span id="vectordim"></span>)</p>
+          <textarea id="t_message" name="message" placeholder="vector" style="width:100%; height:500px"></textarea>
+        </div>
+        <div class="modal-footer float-right">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id="savevector" type="button" class="btn btn-success">Save</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><i class="fas fa-exclamation-triangle"></i></button> Error</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- jQuery -->
+  <script src="javascripts/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="javascripts/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="javascripts/adminlte.min.js"></script>
+  <script src="javascripts/loadingoverlay.min.js"></script>
+  <script src="javascripts/sweetalert2.min.js"></script>
+  <script src="javascripts/jquery.jsonview.min.js"></script>
+  <script src="javascripts/moment.min.js"></script>
+  <script src="javascripts/moment-timezone.min.js"></script>
+  <script src="javascripts/moment-timezone-with-data.min.js"></script>
+  <script src="javascripts/xspreadsheet.js"></script>
+  <script src="javascripts/shim.min.js"></script>
+  <script src="javascripts/xlsx.mini.min.js"></script>
+  <script src="javascripts/xlsxspread.min.js"></script>  
+  <script src="javascripts/pdf.min.js"></script>
+  <script src="javascripts/pdf.worker.js"></script>
+  <script>
+
+  $(function () {
+    //https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript/39906526
+    function formatBytes(a, b = 2) { if (0 === a) return "0 Bytes"; const c = 0 > b ? 0 : b, d = Math.floor(Math.log(a) / Math.log(1024)); return parseFloat((a / Math.pow(1024, d)).toFixed(c)) + " " + ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d] }
+    //https://stackoverflow.com/questions/8493195/how-can-i-parse-a-csv-string-with-javascript-which-contains-comma-in-data
+    function CSVtoArray(s) { if (!/^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/.test(s)) return null; var r = []; return s.replace(/(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g, function (s, e, t, u) { return void 0 !== e ? r.push(e.replace(/\\'/g, "'")) : void 0 !== t ? r.push(t.replace(/\\"/g, '"')) : void 0 !== u && r.push(u), "" }), /,\s*$/.test(s) && r.push(""), r }
+    function trimEllip(str, length) {
+      if (str.length > length) {
+        return str.substring(0, length) + "...";
+      } else {
+        return str;
+      }
+    };
+    function escapeSpecificHtml(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+        .replace(/&lt;em&gt;/g, "<em>")
+        .replace(/&lt;\/em&gt;/g, "</em>");
+    }
+    function showModal(message) {
+      var modal = $('#modal-default');
+      modal.find('.modal-body p').text(message);
+      $('#modal-default').modal('show');
+    };
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+
+    //================================================================================================
+    // localstorage
+    //
+    function storageAvailable(type) {
+      try {
+        var storage = window[type],
+          x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+      } catch (e) {
+        return e instanceof DOMException && (
+          e.code === 22 ||
+          e.code === 1014 ||
+          e.name === 'QuotaExceededError' ||
+          e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+          storage.length !== 0;
+      }
+    }
+
+    var search_service = ""; //検索サービス名 search service name
+    var index_name = "";     //インデックス名 index name
+    var querykey = "";       //クエリキー search query key
+
+    var AZURE_OPENAI_SERVICE = "" //Azure OpenAI Service のサービス名
+    var AZURE_OPENAI_GPT_EMBED_DEPLOYMENT = "" // Azure OpenAI Service の Embeddings モデルデプロイメント名
+    var AZURE_OPENAI_GPT_KEY = "" // Azure OpenAI Service の API Key
+
+    // もし localstorage を使用しない場合は、以下をコメントアウトし、直接変数に値を記載してください
+    // If you do not want to use localstorage, comment out the following code and set the value directly in the variables.
+    if (storageAvailable('localStorage')) {
+      search_service = localStorage.getItem("search_service");
+      index_name = localStorage.getItem("index_name");
+      querykey = localStorage.getItem("querykey");
+      AZURE_OPENAI_SERVICE = localStorage.getItem("AZURE_OPENAI_SERVICE");
+      AZURE_OPENAI_GPT_EMBED_DEPLOYMENT = localStorage.getItem("AZURE_OPENAI_GPT_EMBED_DEPLOYMENT");
+      AZURE_OPENAI_GPT_KEY = localStorage.getItem("AZURE_OPENAI_GPT_KEY");
+    }
+
+    //================================================================================================
+    // Events
+    //
+    $('#btnSearch').click(function () {
+      let searchtext = $('#searchtext').val();
+      let searchFilter = $('#search-filter').val();
+      let searchSelect = $('#search-select').val();
+      let searchOrderby = $('#search-orderby').val();
+      let queryType = $('#queryType').val();
+      let searchMode = $('#searchMode').val();
+      let searchFields = $('#searchFields').val();
+      let top = $('#top').val();
+      let skip = $('#skip').val();
+      let searchFacet = $('#search-facet').val()
+      let searchHighlight = $('#search-highlight').val();
+      let semanticConfiguration = $('#search-semanticConfiguration').val();
+      let embeddings = $('#embeddings').val();
+      let vectorFields = $('#vector-fields').val();
+      let k = $('#k').val();
+
+      if (!search_service || !index_name || !querykey) {
+        return;
+      }
+
+//'api-version': '2023-07-01-Preview',
+
+      $.LoadingOverlay("show");
+      let params = {
+        'queryType': queryType,
+        'searchMode': searchMode,
+        //'count': true,
+        'top': Number(top),
+        'skip': Number(skip),
+        //'featuresMode': "enabled"
+      };
+
+      if($("#searchCheck").prop("checked")) {
+        params["search"] = searchtext;
+      }
+
+      if (searchFilter.length > 0) {
+        params["filter"] = searchFilter;
+      }
+      if (searchSelect.length > 0) {
+        params["select"] = searchSelect;
+      }
+      if (searchOrderby.length > 0) {
+        params["orderby"] = searchOrderby;
+      }
+      if (searchFields.length > 0) {
+        params["searchFields"] = searchFields;
+      }
+      if (searchFacet.length > 0) {
+        params["facets"] = CSVtoArray(searchFacet);
+      }
+      if (searchHighlight.length > 0) {
+        params["highlight"] = searchHighlight
+      }
+      if (semanticConfiguration.length > 0) {
+        params["semanticConfiguration"] = semanticConfiguration
+      }
+      if (queryType == "semantic") {
+        //Semantic Search Parameters
+        params["answers"] = "extractive";
+        params["captions"] = "extractive";
+        params["queryLanguage"] = "ja-jp";
+      }
+
+      if (embeddings.length > 0 && $("#embedCheck").prop("checked")) {
+        vector = {
+          "value": CSVtoArray(embeddings),
+          "fields": vectorFields,
+          "k": k
+        }
+        params["vector"] = vector;
+      }
+
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        url: 'https://' + search_service + '.search.windows.net/indexes/' + index_name + '/docs/search?api-version=2023-07-01-Preview',
+        headers: {
+          "api-key": querykey,
+          "Access-Control-Allow-Origin": "*"
+        },
+        data: JSON.stringify(params)
+
+      }).done(function (data, textStatus, jqXHR) {
+        let result = data['value'];
+        let ul = [];
+        let $result = $("#searchresult");
+        let $facetcard = $('#custom-tabs-four-home');
+        let $semanticAnswer = $('#semantic-answer');
+        let searchcount = data['@odata.count'];
+        $result.empty();
+        $facetcard.empty();
+        $semanticAnswer.empty();
+        let titleKeymap = new Map();
+
+        searchcount = result.length;
+
+        for (let i = 0; i < result.length; i++) {
+          let element = result[i];
+          let storage_name = element['metadata_storage_name'];
+          let size = element['metadata_storage_size'];
+          let date = element['metadata_storage_last_modified'];
+          let score = element['@search.score'];
+          let rerankerScore = element['@search.rerankerScore'];
+          let storage_path = element['metadata_storage_path'];
+          let storage_path_plain = element['metadata_storage_path_plain'];
+          let storage_sas_token = element['metadata_storage_sas_token'];
+          let content_type = element['metadata_storage_content_type'];
+          let mergedContent = element['merged_content'];
+          let content = element['content'];
+          let id = element['id'];       //vector search sample
+          let title = element['title']; //vector search sample
+          let html_content = "";
+          let html_title = "";
+          let html_head = "";
+          let html_hidden = "";
+          let html_caption = "";
+          let html_filepath = "";
+          let useContent = "";
+          let useTitle = "";
+          let useStoragePath = "";
+          let html_size = "";
+          let html_date = "";
+          
+          if (!rerankerScore) {
+            rerankerScore = 0;
+          }
+          // The viewer that displays the contents of the document has priority
+          // in the order of merged_content -> content.
+          if (mergedContent && mergedContent.length > 0) {
+            useContent = mergedContent;
+          } else if (content && content.length > 0) {
+            useContent = content;
+          }
+
+          // Added title field to adapt to vector search samples
+          if (storage_name && storage_name.length > 0) {
+            useTitle = storage_name;
+          } else if (title && title.length > 0) {
+            useTitle = title;
+          }
+
+          // Added id field to adapt to vector search samples
+          if (storage_path && storage_path.length > 0) {
+            useStoragePath = storage_path;
+          } else if (id && id.length > 0) {
+            useStoragePath = id;
+          }
+
+          titleKeymap.set(useStoragePath, useTitle);
+          html_title = "<div class='post'><div class='search-title'>" + "[" + (i + 1) + "] " + "<a href='#' class='search-title-link' title='" + useTitle + "'>" + useTitle + "</a></div>"
+          
+          if (date && date.length > 0) {
+            html_date = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() + "</span>, "
+          } else {
+            html_date = ""
+          }
+
+          if (size && size >= 0) {
+            html_size = "<span class='search-size'>" + formatBytes(size) + "</span>, "
+          } else {
+            html_size = ""
+          }
+
+          html_head = html_date + html_size +
+            "@sc:<span class='search-score'>" + score.toFixed(4) +
+            "</span>, @rsc:<span class='search-score'>" + rerankerScore.toFixed(4) + "</span></div>"
+          html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>"
+
+          if( (storage_path_plain && storage_path_plain.length > 0) && (storage_sas_token && storage_sas_token.length > 0)){
+            if (content_type=="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || content_type=="application/pdf" || content_type.startsWith("image/")){
+              url = storage_path_plain + storage_sas_token
+              html_filepath = "<p class='filepath'>" + url + "</p>"
+            }
+          }
+
+          html_content_type = "<p class='content-type'>" + content_type + "</p>" + "</div>"
+          
+          //@search.captions 
+          if (element['@search.captions']) {
+            let captions = element['@search.captions']
+            let li = [];
+            for (let i = 0; i < captions.length; i++) {
+              let caption = captions[i];
+              let highlights = caption['highlights'];
+              let text = caption['text'];
+              if (highlights && highlights.length > 0) {
+                li.push(highlights);
+              } else if (text && text.length > 0) {
+                li.push(text);
+              }
+            }
+            html_caption = "<p class='semantic-caption' title='Semantic Caption'>" + escapeSpecificHtml(li.join("")) + "</p>"
+          }
+
+          //@search.highlights 
+          if (element['@search.highlights']) {
+            let highlights = element['@search.highlights']
+            let highlightsList = [];
+            for (let key in highlights) {
+              highlightsList.push(highlights[key]);
+            }
+            let highlightsContent = highlightsList.join().replace(/(\r\n|\n|\r)/gm, " / ");
+            html_content = "<p class='highlight'>" + escapeSpecificHtml(highlightsContent) + "</p>"
+          } else {
+            html_content = "<p class='highlight'>" + escapeSpecificHtml(useContent) + "</p>"
+          }
+
+          ul.push(html_title + html_head + html_caption + html_content + html_hidden + html_filepath + html_content_type);
+        };
+
+        //@search.facets 
+        if (data['@search.facets']) {
+          let facets = data['@search.facets']
+          let keyList = Object.keys(facets)
+          let div = [];
+          for (let k1 in keyList) {
+            let facetItemList = facets[keyList[k1]] //object [{key:val}, {{key:val} ...]
+            let li = [];
+            for (let k2 in facetItemList) {
+                let facetName = facetItemList[k2].value;
+                list = "<li class='nav-item active'><a href='#' title='Click to add to $filter.' class='nav-link facet-link' data-facetfield='" + keyList[k1] + "'>" + trimEllip(String(facetName), 100) + "<span class='badge bg-primary float-right'>" + facetItemList[k2].count + "</span></a></li>"
+                li.push(list)
+              }
+            card1 = '<div class="card"><div class="card-header"><h3 class="card-title">' + keyList[k1] + '</h3>'
+            card2 = '<div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0" style="display: block;">'
+            card3 = '<ul id="facet-organizations" class="nav nav-pills flex-column">' + li.join("") + '</ul></div></div>'
+            div.push(card1 + card2 + card3);
+          }
+
+          $facetcard[0].innerHTML = div.join("");
+        }
+
+        //@search.answers 
+        if (data['@search.answers']) {
+          let answers = data['@search.answers']
+          let div = [];
+          for (let i = 0; i < answers.length; i++) {
+            let element = answers[i];
+            let highlights = element['highlights']
+            let key = element['key']
+            let score = element['score']
+            let text = element['text']
+
+            callout1 = '<div class="callout callout-info callout-semantic" title="Semantic Answer"><h5>' + escapeSpecificHtml(highlights) + '</h5>'
+            callout2 = '<p class="answertitle">' + titleKeymap.get(key) + '<p>'
+            callout3 = "<span class='search-score'>score:" + score.toFixed(4) + '</span></div>'
+
+            div.push(callout1 + callout2 + callout3);
+          }
+
+          $semanticAnswer[0].innerHTML = div.join("");
+        }
+
+        $result[0].innerHTML = ul.join("");
+        $('#search-count').text("1 - " + searchcount + " of " + searchcount);
+        $('#json').JSONView(data);
+        $('#json2').JSONView(params);
+        $.LoadingOverlay("hide");
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+        let res = {}
+        try {
+          res = $.parseJSON(jqXHR.responseText);
+          showModal(res.error.message);
+        } catch (e) {
+        }
+
+        $.LoadingOverlay("hide");
+      });
+    });
+
+    $("input").keypress(function (e) {
+      if (e.which == 13) {
+        $("#btnSearch").click();
+      }
+    });
+
+    $('#btnGetembed').click(function () {
+      $.LoadingOverlay("show");
+      let searchtext = $('#searchtext').val();
+
+      if (searchtext.length == 0) {
+        $.LoadingOverlay("hide");
+        showModal("Please enter Search words.");
+        return;
+      }
+
+      if (!AZURE_OPENAI_SERVICE || !AZURE_OPENAI_GPT_EMBED_DEPLOYMENT || !AZURE_OPENAI_GPT_KEY) {
+        $.LoadingOverlay("hide");
+        showModal("Please set Azure OpenAI GPT-3 API Settings.");
+        return;
+      }
+
+      let params = {
+        'input': searchtext
+      };
+
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: "https://" + AZURE_OPENAI_SERVICE + ".openai.azure.com/" + "openai/deployments/" + AZURE_OPENAI_GPT_EMBED_DEPLOYMENT + "/embeddings?api-version=2023-05-15",
+        headers: {
+          "content-type": "application/json",
+          "api-key": AZURE_OPENAI_GPT_KEY
+        },
+        data: JSON.stringify(params)
+
+      }).done(function (data, textStatus, jqXHR) {
+        let embeddings = data['data'][0].embedding;
+        $("#embeddings").val(embeddings);
+        $.LoadingOverlay("hide");
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+        let res = {}
+        try {
+          //res = $.parseJSON(jqXHR.responseText);
+          showModal(res.error.message);
+        } catch (e) {
+        }
+
+        $.LoadingOverlay("hide");
+      });
+    });
+
+    $('#btnVectorEditor').click(function () {
+      let embeddings = $('#embeddings').val();
+      showModalInfo(embeddings)
+
+    });
+
+    function showModalInfo(message, type = "INFO") {
+      var modal = $('#modal-vector');
+      jsonmessage = CSVtoArray(message)
+      modal.find('.modal-body textarea').val(jsonmessage.join("\n"));
+      //vectordim
+      modal.find('#vectordim').text(jsonmessage.length);
+      if (type == "ERROR") {
+        modal.find('.modal-title').html('<i class="fa fa-exclamation-triangle"></i></button> Error');
+      } else if (type == "INFO") {
+        modal.find('.modal-title').html('<i class="fa fa-info-circle"></i></button> Info');
+      }
+
+      $('#modal-vector').modal('show');
+    };
+
+
+    $('#savevector').click(function () {
+      var modal = $('#modal-vector');
+      vectortext = modal.find('.modal-body textarea').val();
+      vectortextline = vectortext.replace(/(\r\n|\n|\r)/gm, ",");
+
+      $("#embeddings").val(vectortextline);
+      $('#modal-vector').modal('hide');
+    });
+
+
+//=========================================================================
+//=========================================================================
+
+    $(document).on('click', '.search-title-link', function () {
+      $('#textarea_content').text('');
+      let filename = $(this).text();
+      let contenttext = $(this).parent().parent().find(".hide-content").text();
+      let filepath = $(this).parent().parent().find(".filepath").text();
+      let content_type = $(this).parent().parent().find(".content-type").text();
+      let modal = $('#modal-content');
+
+      $('#textarea_content').text(unescape(contenttext));
+      $('#addFaceLabel').text(filename);
+
+      if (filepath && filepath.length > 0) {
+        //XLSX Preview
+        if (content_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+          var url = filepath;
+          /* set up an async GET request */
+          var req = new XMLHttpRequest();
+          req.open("GET", url, true);
+          req.responseType = "arraybuffer";
+          req.onload = function (e) {
+            if (req.readyState == 4 && (req.status == 200 || req.status == 304)) {
+              /* parse the data when it is received */
+              var data = new Uint8Array(req.response);
+              process_wb(XLSX.read(data, { type: 'array' }));
+              $('#pdf-tab-home').hide();
+              $('#preview-tab-home').show();
+              $('#preview-tab-home').tab('show');
+              $('#image-tab').hide();
+
+            } else {
+              console.log('Failed. HttpStatus: ' + req.statusText, req.status);
+              $('#pdf-tab-home').hide();
+              $('#preview-tab-home').hide();
+              $('#image-tab').hide();
+            }
+          };
+          req.send();
+
+        //PDF Preview
+        } else if (content_type == "application/pdf") {
+          var pdf = filepath;
+          // Load the Document
+          pdfjsLib
+            .getDocument(pdf)
+            .promise.then((doc) => {
+              $initialState.pdfDoc = doc;
+              $('#page_count').html($initialState.pdfDoc.numPages);
+              renderPage();
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+
+          $('#preview-tab-home').hide();
+          $('#pdf-tab-home').show();
+          $('#pdf-tab-home').tab('show')
+          $('#image-tab').hide();
+
+        //Image Preview
+        } else if (content_type.startsWith("image/")) {
+          var imageurl = filepath;
+          $('#imagepreview_content').attr('src', imageurl);
+          
+          $('#preview-tab-home').hide();
+          $('#pdf-tab-home').hide();
+          $('#image-tab').show();
+          $('#image-tab').tab('show')
+
+        } else {
+          $('#preview-tab-home').hide();
+          $('#pdf-tab-home').hide();
+          $('#image-tab').hide();
+          $('#text-tab').tab('show')
+        }
+      } else {
+        $('#preview-tab-home').hide();
+        $('#pdf-tab-home').hide();
+        $('#image-tab').hide();
+        $('#text-tab').tab('show')
+      }
+
+      $('#modal-content').modal('show');
+      return false;
+    });
+
+    $('#modal-content').on('hidden.bs.modal', function (e) {
+      //console.log("modal closed. hidden.bs.modal");
+      //xspr = {};
+    })
+
+    $(document).on('click', '.facet-link', function () {
+      let facetitem = $($(this).contents()[0]).text();
+      let facetField = $(this).data('facetfield');
+      let searchFilter = $('#search-filter').val();
+      let filterString = "";
+      let filterNumber = "";
+      let filterCollection = "";
+      let filterString_add = "";
+      let filterNumber_add = "";
+      let filterCollection_add = "";
+
+      if (facetitem.length > 0) {
+        filterString = facetField + " eq '" + facetitem + "'";
+        filterNumber = facetField + " eq " + facetitem;
+        filterCollection = facetField + "/any(t:t eq '" + facetitem + "')";
+
+        if (searchFilter.length > 0) {
+          filterString_add = searchFilter + ' and ' + facetField + " eq '" + facetitem + "'";
+          filterNumber_add = searchFilter + ' and ' + facetField + " eq " + facetitem;
+          filterCollection_add = searchFilter + ' and ' + facetField + "/any(t:t eq '" + facetitem + "')";
+        }
+
+        $('#btnAddFacet-string').text(filterString);
+        $('#btnAddFacet-number').text(filterNumber);
+        $('#btnAddFacet-collection').text(filterCollection);
+        $('#btnAddFacet-string').attr("data-output", filterString_add);
+        $('#btnAddFacet-number').attr("data-output", filterNumber_add);
+        $('#btnAddFacet-collection').attr("data-output", filterCollection_add);
+
+        $('#modal-facet').modal('show');
+      }
+
+      return false;
+    });
+
+    $('.btnAddFacet').click(function () {
+      let outputString = $(this).attr("data-output");
+      let outputButtonText = $(this).text();
+
+      if (outputString.length > 0) {
+        $('#search-filter').val(outputString);
+      } else {
+        $('#search-filter').val(outputButtonText);
+      }
+      $('#modal-facet').modal('hide');
+    });
+
+    $('#btnClear').click(function () {
+      $('#searchtext').val("");
+      $('#search-filter').val("");
+      $('#search-select').val("");
+      $('#search-orderby').val("");
+      $('#queryType').val("simple");
+      $('#searchMode').val("any");
+      $('#searchFields').val("");
+      $('#top').val(50);
+      $('#skip').val(0);
+      $('#search-facet').val("")
+      $('#search-highlight').val("");
+      $('#embeddings').val("");
+      Toast.fire({
+        icon: 'success',
+        title: 'クリア完了しました'
+      });
+    });
+
+    //Download CSV Data
+    $('#btnDownload').click(function () {
+      var arrStandard = $('.post').map(function (index, element) {
+        return $(this).find('.search-title-link,.search-date,.search-size,.search-score,.search-rerankerScore,.semantic-caption,.highlight').map(function () {
+          return $(this).text()
+        });
+      });
+      
+      var header = ['smt_title', 'smt_date', 'smt_size', 'smt_score', 'smt_rescore', 'smt_caption', 'smt_highlight'];
+      var crlf = '\r\n';
+      var csv = arrStandard.map(function (i, row) { return row.toArray().join(','); }).toArray().join('\r\n');
+      var bom = new Uint8Array([0xEF, 0xBB, 0xBF])
+      var blob = new Blob([bom, header, crlf, csv], { type: 'text/csv' })
+      var url = (window.URL || window.webkitURL).createObjectURL(blob)
+      var a = document.getElementById('btnDownload')
+      a.download = 'semanticsearchdata.csv'
+      a.href = url
+    });
+
+    $('#modal-content').on('shown.bs.modal', function (event) {
+      //console.log("modal shown")
+      $('#textarea_content').scrollTop(0);
+    });
+
+    $('#toggle-btn').on('click', function () {
+      $('#json').JSONView('toggle');
+    });
+
+    $('#toggle-level1-btn').on('click', function () {
+      $('#json').JSONView('toggle', 1);
+    });
+
+    $('#toggle-level2-btn').on('click', function () {
+      $('#json').JSONView('toggle', 2);
+    });
+
+    $('#toggle-level3-btn').on('click', function () {
+      $('#json').JSONView('toggle', 3);
+    });
+
+  });
+  </script>
+  <script src="javascripts/filepreview.js"></script>
+
+
+</body>
+
+</html>
