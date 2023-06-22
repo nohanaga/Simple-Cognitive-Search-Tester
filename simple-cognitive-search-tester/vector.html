@@ -275,7 +275,7 @@
                     <div class="col-6">
                       <div class="form-group">
                         <label>select</label> <a href="https://learn.microsoft.com/azure/search/search-query-odata-select" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
-                        <input id="search-select" type="text" class="form-control form-control-sm" value="content, category, title" placeholder="content">
+                        <input id="search-select" type="text" class="form-control form-control-sm" value="" placeholder="content">
                       </div>
                     </div>
                     <div class="col-6">
@@ -301,7 +301,7 @@
                         <label>highlight</label> <a
                           href="https://learn.microsoft.com/azure/search/search-pagination-page-layout#hit-highlighting"
                           target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
-                        <input id="search-highlight" type="text" class="form-control form-control-sm" value="content-3"
+                        <input id="search-highlight" type="text" class="form-control form-control-sm" value=""
                           placeholder="content-3, merged_content-3, keyphrases-3">
                       </div>
                     </div>
@@ -738,16 +738,18 @@
       if (searchHighlight.length > 0) {
         params["highlight"] = searchHighlight
       }
-      if (semanticConfiguration.length > 0) {
-        params["semanticConfiguration"] = semanticConfiguration
-      }
-      if (queryLanguage.length > 0) {
-        params["queryLanguage"] = queryLanguage
-      }
+      
       if (queryType == "semantic") {
         //Semantic Search Parameters
         params["answers"] = "extractive";
         params["captions"] = "extractive";
+
+        if (semanticConfiguration.length > 0) {
+          params["semanticConfiguration"] = semanticConfiguration
+        }
+        if (queryLanguage.length > 0) {
+          params["queryLanguage"] = queryLanguage
+        }
       }
 
       if (embeddings.length > 0 && $("#embedCheck").prop("checked")) {
@@ -837,10 +839,11 @@
           }
 
           titleKeymap.set(useStoragePath, useTitle);
-          html_title = "<div class='post'><div class='search-title'>" + "[" + (i + 1) + "] " + "<a href='#' class='search-title-link' title='" + useTitle + "'>" + useTitle + "</a></div>"
+          tag_post = "<div class='post'>"
+          html_title = "<div class='search-title'>" + "[" + (i + 1) + "] " + "<a href='#' class='search-title-link' title='" + useTitle + "'>" + useTitle + "</a></div>"
           
           if (date && date.length > 0) {
-            html_date = "<div class='search-header'><span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() + "</span>, "
+            html_date = "<span class='search-date'>" + moment(date).tz("Asia/Tokyo").format() + "</span>, "
           } else {
             html_date = ""
           }
@@ -851,9 +854,9 @@
             html_size = ""
           }
 
-          html_head = html_date + html_size +
+          html_head = "<div class='search-header'>" + html_date + html_size +
             "@sc:<span class='search-score'>" + score.toFixed(4) +
-            "</span>, @rsc:<span class='search-score'>" + rerankerScore.toFixed(4) + "</span></div>"
+            "</span>, @rsc:<span class='search-score'>" + rerankerScore.toFixed(4) + "</span>" + "</div>"
           html_hidden = "<p class='hide-content'>" + escape(useContent) + "</p>"
 
           if( (storage_path_plain && storage_path_plain.length > 0) && (storage_sas_token && storage_sas_token.length > 0)){
@@ -863,7 +866,7 @@
             }
           }
 
-          html_content_type = "<p class='content-type'>" + content_type + "</p>" + "</div>"
+          html_content_type = "<p class='content-type'>" + content_type + "</p>"
           
           //@search.captions 
           if (element['@search.captions']) {
@@ -895,7 +898,8 @@
             html_content = "<p class='highlight'>" + escapeSpecificHtml(useContent) + "</p>"
           }
 
-          ul.push(html_title + html_head + html_caption + html_content + html_hidden + html_filepath + html_content_type);
+          tag_post_end = "</div>"
+          ul.push(tag_post + html_title + html_head + html_caption + html_content + html_hidden + html_filepath + html_content_type + tag_post_end);
         };
 
         //@search.facets 

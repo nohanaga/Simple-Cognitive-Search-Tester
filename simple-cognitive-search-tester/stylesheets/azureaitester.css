@@ -121,9 +121,9 @@ pre {
 }
 
 p.highlight {
-  height: 60px;
+  max-height: 100px;
   overflow: hidden;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
 }
 
 .search-header {
