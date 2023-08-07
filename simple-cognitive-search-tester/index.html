@@ -626,29 +626,28 @@
       $.LoadingOverlay("show");
       let params = {
         'search': searchtext,
-        'api-version': '2021-04-30-Preview',
         'queryType': queryType,
         'searchMode': searchMode,
-        '$count': true,
-        '$top': Number(top),
-        '$skip': Number(skip),
+        'count': true,
+        'top': Number(top),
+        'skip': Number(skip),
         'featuresMode': "enabled"
       };
 
       if (searchFilter.length > 0) {
-        params["$filter"] = searchFilter;
+        params["filter"] = searchFilter;
       }
       if (searchSelect.length > 0) {
-        params["$select"] = searchSelect;
+        params["select"] = searchSelect;
       }
       if (searchOrderby.length > 0) {
-        params["$orderby"] = searchOrderby;
+        params["orderby"] = searchOrderby;
       }
       if (searchFields.length > 0) {
         params["searchFields"] = searchFields;
       }
       if (searchFacet.length > 0) {
-        params["facet"] = CSVtoArray(searchFacet);
+        params["facets"] = CSVtoArray(searchFacet)
       }
       if (searchHighlight.length > 0) {
         params["highlight"] = searchHighlight
@@ -661,14 +660,15 @@
       }
 
       $.ajax({
-        type: 'GET',
+        type: 'POST',
         dataType: 'json',
-        contentType: 'application/json; charset=UTF-8',
-        url: 'https://' + search_service + '.search.windows.net/indexes/' + index_name + '/docs',
+        contentType: 'application/json; charset=utf-8',
+        url: 'https://' + search_service + '.search.windows.net/indexes/' + index_name + '/docs/search?api-version=2023-07-01-Preview',
         headers: {
-          "api-key": querykey
+          "api-key": querykey,
+          "Access-Control-Allow-Origin": "*"
         },
-        data: params
+        data: JSON.stringify(params)
 
       }).done(function (data, textStatus, jqXHR) {
         let result = data['value'];
